@@ -12,13 +12,15 @@ let gameState = {
     "instagram",
     "restaurant",
     "song",
-    "ramen"
+    "ramen",
+    "proposal"
   ],
   stagesCompleted: {
     instagram: false,
     restaurant: false,
     song: false,
-    ramen: false
+    ramen: false,
+    proposal: false
   },
   gameComplete: false
 };
@@ -76,11 +78,18 @@ function hideInteraction(interactionId) {
 
 function completeStage(stage) {
   gameState.stagesCompleted[stage] = true;
-  gameState.currentStage++;
   
-  // Check if this was the last stage
-  if (gameState.currentStage >= gameState.stages.length) {
-    showFinalQuestion();
+  // Only advance to next stage if not on the proposal stage
+  if (stage !== "proposal") {
+    gameState.currentStage++;
+    
+    // Check if this was the second-to-last stage (ramen)
+    if (stage === "ramen") {
+      // Show a special dialog directing to the final spot
+      showDialog("You've completed all our memories! Head to the special gazebo at the end of the path for a surprise...", 6000);
+    }
+  } else {
+    // If this was the proposal stage, the game is truly complete
     gameState.gameComplete = true;
   }
 }

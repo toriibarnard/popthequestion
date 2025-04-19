@@ -15,11 +15,23 @@ function initializeGame() {
     gameState.stagesCompleted[key] = false;
   });
   
+  // Place player at starting position
+  player.x = 150;
+  player.y = 220;
+  player.direction = 'right';
+  
+  // Initialize camera
+  camera.x = 0;
+  camera.y = 0;
+  
   // Set up the "Yes" button for the final question
   document.getElementById('yesButton').addEventListener('click', () => {
     document.getElementById('finalQuestion').style.display = 'none';
     document.getElementById('celebration').style.display = 'block';
     createHearts();
+    
+    // Mark proposal as completed
+    completeStage("proposal");
   });
   
   // Set up the "No" button that escapes
@@ -38,8 +50,12 @@ function initializeGame() {
     button.style.top = randomY + 'px';
   });
   
+  // Set up song for the music interaction
+  // In a real implementation, you'd set the actual path to your mp3 file
+  document.getElementById('songPlayer').src = 'path/to/lover_you_shouldve_come_over.mp3';
+  
   // Initial instructions
-  showDialog("Welcome to our special journey! Use arrow keys or WASD to move. Visit each location in order.", 6000);
+  showDialog("Welcome to our special journey! Explore our memories together by following the path. Use arrow keys or WASD to move.", 6000);
   
   // Start the game loop
   window.requestAnimationFrame(gameLoop);

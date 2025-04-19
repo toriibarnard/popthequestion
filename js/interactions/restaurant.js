@@ -7,10 +7,10 @@ function initRestaurantInteraction() {
     
     // Date memory game items (to be arranged in correct order)
     const dateMemories = [
-      "We arrived at the restaurant and were seated by the window",
-      "You told me about your favorite childhood memory",
-      "We shared that amazing appetizer and couldn't stop talking",
-      "You laughed so hard when I spilled my drink",
+      "The 'Trust' incident",
+      "'It was my pleasure'",
+      "You asked if you could kiss me",
+      "You got shy and curled up in a ball",
       "We walked outside under the stars after dinner"
     ];
     

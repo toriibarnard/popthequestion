@@ -8,12 +8,14 @@ function initSongInteraction() {
     
     // Setup lyrics with blanks
     const lyrics = [
-      { line: "It's funny how we met that night", blank: false },
-      { line: "And I couldn't take my eyes off you", blank: true, answer: "eyes" },
-      { line: "We talked till morning light", blank: false },
-      { line: "And I knew right then what I had to do", blank: true, answer: "knew" },
-      { line: "Lover, you should've come over", blank: false },
-      { line: "To my heart, to my arms, to my side", blank: true, answer: "heart" }
+      { line: "It's never over", blank: false },
+      { line: "My kingdom for a kiss upon her shoulder", blank: true, answer: "kiss" },
+      { line: "It's never over", blank: false },
+      { line: "All my riches for a smile when i've slept so soft against her", blank: true, answer: "smile" },
+      { line: "It's never over", blank: false },
+      { line: "All my blood for the sweetness of her laughter", blank: true, answer: "laughter" },
+      { line: "It's never over", blank: false },
+      { line: "She is the tear that hangs inside my soul forever", blank: true, answer: "tear" }
     ];
     
     // Create lyric game
