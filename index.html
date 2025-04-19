@@ -9,8 +9,65 @@
 <body>
   <div id="gameContainer">
     <canvas id="gameCanvas" width="800" height="600"></canvas>
-    <div id="instructions">Use arrow keys or WASD to move. Explore and find all special moments!</div>
+    <div id="instructions">Use arrow keys or WASD to move. Visit our special memories in order!</div>
     <div id="dialog"></div>
+    
+    <!-- Instagram DM Interaction -->
+    <div id="instagramInteraction" class="interaction-popup">
+      <h3>Our First Interaction</h3>
+      <div class="dm-container">
+        <div class="dm-message">
+          <div class="dm-header">
+            <span class="dm-username">You</span>
+            <span class="dm-time">8:37 PM</span>
+          </div>
+          <div class="dm-text">hey gorgeous</div>
+        </div>
+        <div class="dm-typing">Type your response to continue...</div>
+        <input type="text" id="dmResponse" class="dm-input" placeholder="Type something sweet...">
+        <button id="dmSendButton" class="interaction-button">Send</button>
+      </div>
+    </div>
+    
+    <!-- Restaurant Date Interaction -->
+    <div id="restaurantInteraction" class="interaction-popup">
+      <h3>Our First Date at Restauranté Amano</h3>
+      <div class="memory-container">
+        <p>Remember our first date? We had such an amazing time.</p>
+        <div class="memory-game-simple">
+          <p>Arrange these moments in the order they happened:</p>
+          <div id="dateMemoryItems" class="memory-items"></div>
+        </div>
+        <button id="checkDateOrderButton" class="interaction-button">This is how I remember it</button>
+      </div>
+    </div>
+    
+    <!-- Favorite Song Interaction -->
+    <div id="songInteraction" class="interaction-popup">
+      <h3>Our Song</h3>
+      <div class="song-container">
+        <p>"Lover, You Should've Come Over" by Joel Plaskett</p>
+        <div class="lyric-container" id="lyricContainer">
+          <p>Complete the missing lyrics:</p>
+          <div id="lyricGame"></div>
+        </div>
+        <button id="checkLyricsButton" class="interaction-button">Check Lyrics</button>
+        <audio id="songPlayer" src="" style="display: none;"></audio>
+      </div>
+    </div>
+    
+    <!-- Favorite Food Interaction -->
+    <div id="ramenInteraction" class="interaction-popup">
+      <h3>Our Favorite Food - Buta Ramen</h3>
+      <div class="food-container">
+        <p>We always get so excited about eating here!</p>
+        <div class="food-game">
+          <p>What toppings do we usually get? Select all that apply:</p>
+          <div id="toppingOptions" class="topping-options"></div>
+        </div>
+        <button id="checkRamenButton" class="interaction-button">That's our order!</button>
+      </div>
+    </div>
     
     <div id="finalQuestion">
       <h2>Will You Go Out With Me?</h2>
@@ -24,6 +81,20 @@
     </div>
   </div>
 
-  <script src="game.js"></script>
+  <!-- Core game engine -->
+  <script src="js/engine.js"></script>
+  
+  <!-- Game objects and world -->
+  <script src="js/player.js"></script>
+  <script src="js/world.js"></script>
+  
+  <!-- Interactions -->
+  <script src="js/interactions/instagram.js"></script>
+  <script src="js/interactions/restaurant.js"></script>
+  <script src="js/interactions/song.js"></script>
+  <script src="js/interactions/ramen.js"></script>
+  
+  <!-- Main game logic -->
+  <script src="js/game.js"></script>
 </body>
 </html>
