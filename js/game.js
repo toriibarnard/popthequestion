@@ -17,12 +17,14 @@ function initializeGame() {
   
   // Place player at starting position
   player.x = 150;
-  player.y = 220;
+  player.y = 450;
   player.direction = 'right';
   
   // Initialize camera
   camera.x = 0;
-  camera.y = 0;
+  
+  // Initialize world
+  initializeWorld();
   
   // Set up the "Yes" button for the final question
   document.getElementById('yesButton').addEventListener('click', () => {
@@ -55,7 +57,7 @@ function initializeGame() {
   document.getElementById('songPlayer').src = 'path/to/lover_you_shouldve_come_over.mp3';
   
   // Initial instructions
-  showDialog("Welcome to our special journey! Explore our memories together by following the path. Use arrow keys or WASD to move.", 6000);
+  showDialog("Welcome to our special journey! Use LEFT and RIGHT arrow keys to move, and UP or SPACE to jump. Visit each special location along the way!", 6000);
   
   // Start the game loop
   window.requestAnimationFrame(gameLoop);
