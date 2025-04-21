@@ -81,49 +81,13 @@ function isInCameraView(obj) {
          obj.x < camera.x + camera.width;
 }
 
-// Main world update function
+// Main world update function - simplified without midground
 function updateWorld() {
   updateCamera();
   drawBackground();
-  drawMidground();
   drawForeground();
   drawLocations();
   drawProgressIndicator();
-}
-
-// Draw the world background (city skyline and sunset)
-function drawBackground() {
-  // Sunset gradient sky
-  const skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height * 0.7);
-  skyGradient.addColorStop(0, '#FF6B6B'); // Pinkish-red at the top
-  skyGradient.addColorStop(0.4, '#FF9E80'); // Orange in the middle
-  skyGradient.addColorStop(0.7, '#B39DDB'); // Purple lower down
-  skyGradient.addColorStop(1, '#5E35B1'); // Deeper purple at horizon
-  
-  ctx.fillStyle = skyGradient;
-  ctx.fillRect(0, 0, canvas.width, canvas.height * 0.7);
-  
-  // Sun/moon
-  ctx.fillStyle = '#FFECB3';
-  ctx.beginPath();
-  ctx.arc(canvas.width * 0.8, canvas.height * 0.15, 40, 0, Math.PI * 2);
-  ctx.fill();
-  
-  // Sun glow
-  const sunGlow = ctx.createRadialGradient(
-    canvas.width * 0.8, canvas.height * 0.15, 40,
-    canvas.width * 0.8, canvas.height * 0.15, 100
-  );
-  sunGlow.addColorStop(0, 'rgba(255, 236, 179, 0.4)');
-  sunGlow.addColorStop(1, 'rgba(255, 236, 179, 0)');
-  
-  ctx.fillStyle = sunGlow;
-  ctx.beginPath();
-  ctx.arc(canvas.width * 0.8, canvas.height * 0.15, 100, 0, Math.PI * 2);
-  ctx.fill();
-  
-  // Draw distant city skyline (fixed, doesn't move with camera)
-  drawCitySkyline();
 }
 
 // Update and draw the progress indicator

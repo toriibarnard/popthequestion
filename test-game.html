@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minimal Game</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #333;
+    }
+    
+    #gameContainer {
+      position: relative;
+      width: 800px;
+      height: 600px;
+      overflow: hidden;
+    }
+    
+    #gameCanvas {
+      background-color: #222;
+      display: block;
+    }
+    
+    #dialog {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      background-color: rgba(0,0,0,0.7);
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      display: none;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="gameContainer">
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div id="dialog"></div>
+  </div>
+
+  <script>
+    // Get the canvas and context
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const dialog = document.getElementById('dialog');
+    
+    // Basic game state
+    const gameState = {
+      activeInteraction: null,
+      currentStage: 0,
+      stages: ["instagram", "restaurant", "song", "ramen", "proposal"],
+      stagesCompleted: {
+        instagram: false,
+        restaurant: false,
+        song: false,
+        ramen: false,
+        proposal: false
+      }
+    };
+    
+    // Map and camera
+    const mapWidth = 3000;
+    const mapHeight = 600;
+    const camera = {
+      x: 0,
+      width: 800,
+      height: 600
+    };
+    
+    // Player object
+    const player = {
+      x: 150,
+      y: 450,
+      width: 40,
+      height: 60,
+      speed: 4,
+      moving: false,
+      direction: 'right',
+      frame: 0
+    };
+    
+    // Input handling
+    const keys = {};
+    
+    window.addEventListener('keydown', function(e) {
+      keys[e.key] = true;
+    });
+    
+    window.addEventListener('keyup', function(e) {
+      keys[e.key] = false;
+    });
+    
+    // Locations
+    const locations = [
+      {
+        id: "instagram",
+        x: 300,
+        y: 450,
+        width: 100,
+        height: 120,
+        name: "Instagram DM"
+      },
+      {
+        id: "restaurant",
+        x: 900,
+        y: 450,
+        width: 150,
+        height: 120,
+        name: "Restaurant"
+      },
+      {
+        id: "song",
+        x: 1500,
+        y: 450,
+        width: 100,
+        height: 90,
+        name: "Song"
+      },
+      {
+        id: "ramen",
+        x: 2100,
+        y: 450,
+        width: 150,
+        height: 120,
+        name: "Ramen"
+      },
+      {
+        id: "proposal",
+        x: 2700,
+        y: 450,
+        width: 200,
+        height: 150,
+        name: "Proposal"
+      }
+    ];
+    
+    // Utility functions
+    function showDialog(text, duration = 4000) {
+      dialog.textContent = text;
+      dialog.style.display = 'block';
+      
+      setTimeout(() => {
+        dialog.style.display = 'none';
+      }, duration);
+    }
+    
+    function isInCameraView(obj) {
+      return obj.x + (obj.width || 0) > camera.x && 
+             obj.x < camera.x + camera.width;
+    }
+    
+    // Update camera
+    function updateCamera() {
+      camera.x = player.x - camera.width / 2;
+      
+      if (camera.x < 0) camera.x = 0;
+      if (camera.x > mapWidth - camera.width) camera.x = mapWidth - camera.width;
+    }
+    
+    // Draw background
+    function drawBackground() {
+      // Night sky gradient
+      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height * 0.7);
+      gradient.addColorStop(0, '#0D0221');
+      gradient.addColorStop(0.5, '#241734');
+      gradient.addColorStop(1, '#5C2751');
+      
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height * 0.7);
+      
+      // Moon
+      ctx.fillStyle = '#E6E6FA';
+      ctx.beginPath();
+      ctx.arc(canvas.width * 0.8, canvas.height * 0.15, 30, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Ground
+      ctx.fillStyle = '#1E1E24';
+      ctx.fillRect(0, 500, canvas.width, 100);
+    }
+    
+    // Draw player
+    function drawPlayer() {
+      // Adjust for camera
+      const screenX = player.x - camera.x;
+      
+      // Body
+      ctx.fillStyle = '#FF5252';
+      ctx.fillRect(screenX, player.y, player.width, player.height);
+      
+      // Face
+      ctx.fillStyle = '#FFB74D';
+      ctx.fillRect(screenX + 5, player.y + 5, player.width - 10, player.height / 3);
+      
+      // Eyes
+      ctx.fillStyle = '#212121';
+      if (player.direction === 'left') {
+        ctx.fillRect(screenX + 10, player.y + 15, 5, 5);
+      } else {
+        ctx.fillRect(screenX + 25, player.y + 15, 5, 5);
+      }
+      
+      // Mouth
+      ctx.fillRect(screenX + 15, player.y + 25, 10, 3);
+    }
+    
+    // Draw locations
+    function drawLocations() {
+      locations.forEach((location, index) => {
+        if (index > gameState.currentStage && location.id !== 'proposal') {
+          return;
+        }
+        
+        if (isInCameraView(location)) {
+          const x = location.x - camera.x;
+          
+          // Draw a simple box for each location
+          ctx.fillStyle = '#5D4037';
+          ctx.fillRect(x, location.y, location.width, location.height);
+          
+          // Label
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = '14px Arial';
+          ctx.textAlign = 'center';
+          ctx.fillText(location.name, x + location.width / 2, location.y - 10);
+        }
+      });
+    }
+    
+    // Move player
+    function movePlayer() {
+      if ((keys.ArrowLeft || keys.a) && player.x > 0) {
+        player.x -= player.speed;
+        player.direction = 'left';
+        player.moving = true;
+      }
+      if ((keys.ArrowRight || keys.d) && player.x < mapWidth - player.width) {
+        player.x += player.speed;
+        player.direction = 'right';
+        player.moving = true;
+      }
+      
+      if (!(keys.ArrowLeft || keys.a || keys.ArrowRight || keys.d)) {
+        player.moving = false;
+      }
+    }
+    
+    // Check location interactions
+    function checkLocationInteractions() {
+      const currentStageId = gameState.stages[gameState.currentStage];
+      const currentLocation = locations.find(loc => loc.id === currentStageId);
+      
+      if (currentLocation && !gameState.stagesCompleted[currentStageId]) {
+        const dx = (player.x + player.width/2) - (currentLocation.x + currentLocation.width/2);
+        const dy = (player.y + player.height/2) - (currentLocation.y + currentLocation.height/2);
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < 80) {
+          showDialog("Press Space to interact", 500);
+        }
+      }
+    }
+    
+    // Update player
+    function updatePlayer() {
+      movePlayer();
+      checkLocationInteractions();
+      drawPlayer();
+    }
+    
+    // Main update function
+    function updateWorld() {
+      updateCamera();
+      drawBackground();
+      drawLocations();
+    }
+    
+    // Main game loop
+    function gameLoop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      updateWorld();
+      updatePlayer();
+      
+      requestAnimationFrame(gameLoop);
+    }
+    
+    // Start the game
+    window.onload = function() {
+      showDialog("Use LEFT and RIGHT arrow keys to move!", 5000);
+      gameLoop();
+    };
+  </script>
+</body>
+</html>

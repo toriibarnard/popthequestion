@@ -20,10 +20,13 @@ function initializeGame() {
   player.y = 450;
   player.direction = 'right';
   
+  // Initialize player face
+  initializePlayerFace('face.jpg'); // You'll need to provide this image
+  
   // Initialize camera
   camera.x = 0;
   
-  // Initialize world
+  // Initialize world with cyberpunk night city theme
   initializeWorld();
   
   // Set up the "Yes" button for the final question
@@ -57,7 +60,7 @@ function initializeGame() {
   document.getElementById('songPlayer').src = 'path/to/lover_you_shouldve_come_over.mp3';
   
   // Initial instructions
-  showDialog("Welcome to our special journey! Use LEFT and RIGHT arrow keys to move, and UP or SPACE to jump. Visit each special location along the way!", 6000);
+  showDialog("Welcome to our special journey through the neon-lit night! Use LEFT and RIGHT arrow keys to move, and UP or SPACE to jump. Visit each special memory along the path!", 6000);
   
   // Start the game loop
   window.requestAnimationFrame(gameLoop);
