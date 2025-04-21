@@ -2,11 +2,15 @@
 
 // Initialize all world components
 function initializeWorld() {
+  console.log("Initializing world...");
+  
   // Initialize background elements (cyberpunk night city)
   initializeBackground();
   
   // Initialize foreground elements (street and decorations)
   initializeForeground();
+  
+  console.log("World initialization complete");
 }
 
 // Helper function to convert hex color to RGB
@@ -25,5 +29,4 @@ function hexToRgb(hex) {
   } : null;
 }
 
-// Call this function once at startup
-initializeWorld();
+// Don't call initializeWorld() here - it will be called from game.js

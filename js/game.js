@@ -2,11 +2,19 @@
 
 // Initialize the game when the page loads
 window.onload = function() {
+  console.log("Window loaded, initializing game...");
+  
+  // Initialize the engine first
+  initializeEngine();
+  
+  // Then initialize the game
   initializeGame();
 };
 
 // Game initialization function
 function initializeGame() {
+  console.log("Initializing game...");
+  
   // Set up initial game state
   gameState.currentStage = 0;
   
@@ -21,7 +29,11 @@ function initializeGame() {
   player.direction = 'right';
   
   // Initialize player face
-  initializePlayerFace('face.jpg'); // You'll need to provide this image
+  try {
+    initializePlayerFace('face.jpg'); // You'll need to provide this image
+  } catch (e) {
+    console.error("Could not initialize player face:", e);
+  }
   
   // Initialize camera
   camera.x = 0;
@@ -61,6 +73,8 @@ function initializeGame() {
   
   // Initial instructions
   showDialog("Welcome to our special journey through the neon-lit night! Use LEFT and RIGHT arrow keys to move, and UP or SPACE to jump. Visit each special memory along the path!", 6000);
+  
+  console.log("Game initialized, starting game loop");
   
   // Start the game loop
   window.requestAnimationFrame(gameLoop);

@@ -1,8 +1,8 @@
 // Game engine core functionality
 
-// Canvas and context
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
+// Canvas and context - declaring but not initializing yet
+let canvas;
+let ctx;
 
 // Game state
 let gameState = {
@@ -28,19 +28,26 @@ let gameState = {
 // Input handling
 const keys = {};
 
-// Event listeners for keyboard
-window.addEventListener('keydown', function(e) {
-  keys[e.key] = true;
+// Initialize engine - call this after DOM is loaded
+function initializeEngine() {
+  // Get canvas and context
+  canvas = document.getElementById('gameCanvas');
+  ctx = canvas.getContext('2d');
   
-  // Prevent scrolling with arrow keys
-  if(["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].indexOf(e.key) > -1) {
-    e.preventDefault();
-  }
-});
-
-window.addEventListener('keyup', function(e) {
-  keys[e.key] = false;
-});
+  // Set up event listeners
+  window.addEventListener('keydown', function(e) {
+    keys[e.key] = true;
+    
+    // Prevent scrolling with arrow keys
+    if(["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].indexOf(e.key) > -1) {
+      e.preventDefault();
+    }
+  });
+  
+  window.addEventListener('keyup', function(e) {
+    keys[e.key] = false;
+  });
+}
 
 // Utility functions
 function showDialog(text, duration = 4000) {

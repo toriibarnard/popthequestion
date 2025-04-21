@@ -14,6 +14,12 @@ const cityBuildings = [
   { x: 860, width: 70, height: 110, windows: true, neonSign: true, neonColor: '#FFCC00' }
 ];
 
+// Initialize the background
+function initializeBackground() {
+  // No initialization needed for the background elements
+  console.log("Background initialized");
+}
+
 // Draw the world background (city skyline and night sky)
 function drawBackground() {
   // Night sky gradient with purple cyberpunk ambience

@@ -6,6 +6,12 @@ const foregroundDecorations = [];
 
 // Initialize foreground elements
 function initializeForeground() {
+  console.log("Initializing foreground...");
+  
+  // Clear existing arrays
+  groundTiles.length = 0;
+  foregroundDecorations.length = 0;
+  
   // Create ground tiles
   for (let x = 0; x < mapWidth; x += 40) {
     // Main ground (nighttime street)
@@ -81,6 +87,8 @@ function initializeForeground() {
   
   // Special decorations for proposal spot
   addProposalDecorations();
+  
+  console.log("Foreground initialized with", groundTiles.length, "ground tiles and", foregroundDecorations.length, "decorations");
 }
 
 // Get color based on location type
@@ -173,6 +181,10 @@ function drawForeground() {
     }
   });
 }
+
+// Drawing functions for various foreground elements
+// These remain unchanged from your original implementation
+// I'll just include them for completeness
 
 // Draw a cyberpunk night city street tile
 function drawGroundTile(x, y, width, height) {

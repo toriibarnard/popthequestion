@@ -35,6 +35,11 @@ function loadPlayerFace(imagePath) {
   player.faceImage.src = imagePath || "face.jpg"; // Default filename if none provided
 }
 
+// Initialize player face - call this from main game.js
+function initializePlayerFace(imagePath) {
+  loadPlayerFace(imagePath);
+}
+
 // Update player position and state
 function updatePlayer() {
   // Only allow movement if no interaction is active
@@ -339,9 +344,4 @@ function getLocationColor(locationType) {
     case 'proposal': return '#FF4081'; // Pink
     default: return '#00FFFF'; // Default cyan
   }
-}
-
-// Initialize player face - call this from main game.js
-function initializePlayerFace(imagePath) {
-  loadPlayerFace(imagePath);
 }
