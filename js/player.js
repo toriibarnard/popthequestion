@@ -33,7 +33,7 @@ function loadPlayerFace(imagePath) {
     console.error("Could not load face image:", imagePath);
     player.faceLoaded = false;
   };
-  player.faceImage.src = imagePath || "face.png"; // Default filename if none provided
+  player.faceImage.src = imagePath || "images/face.png"; // Default filename if none provided
 }
 
 // Initialize player face - call this from main game.js

@@ -28,10 +28,10 @@ function initializeGame() {
   player.y = 450;
   player.direction = 'right';
   
-  // Initialize player face - Add the path to your face.jpg file here
-  // Make sure your face.jpg file is in the same directory as the game files
+  // Initialize player face - Add the path to your face.png file here
+  // Make sure your face.png file is in the same directory as the game files
   try {
-    initializePlayerFace('face.png');
+    initializePlayerFace('images/face.png');
     console.log("Initialized player face with face.png");
   } catch (e) {
     console.error("Could not initialize player face:", e);
