@@ -1,17 +1,17 @@
-// Background elements: night city skyline with cyberpunk/Shanghai aesthetic
+// Background elements: night city skyline with cyberpunk aesthetic
 
 // City buildings data for the skyline
 const cityBuildings = [
-  { x: 0, width: 80, height: 140, windows: true, neonSign: false },
-  { x: 90, width: 60, height: 100, windows: true, neonSign: true, neonColor: '#00FFFF' },
-  { x: 160, width: 100, height: 180, windows: true, neonSign: false },
-  { x: 270, width: 90, height: 120, windows: true, neonSign: true, neonColor: '#FF00FF' },
-  { x: 370, width: 70, height: 150, windows: true, neonSign: false },
-  { x: 450, width: 120, height: 200, windows: true, neonSign: true, neonColor: '#FF3366' },
-  { x: 580, width: 60, height: 130, windows: true, neonSign: false },
-  { x: 650, width: 80, height: 160, windows: true, neonSign: true, neonColor: '#66FF33' },
-  { x: 740, width: 110, height: 190, windows: true, neonSign: false },
-  { x: 860, width: 70, height: 110, windows: true, neonSign: true, neonColor: '#FFCC00' }
+  { x: 0, width: 120, height: 280, windows: true, neonSign: false },
+  { x: 130, width: 90, height: 180, windows: true, neonSign: true, neonColor: '#00FFFF' },
+  { x: 230, width: 200, height: 350, windows: true, neonSign: false },
+  { x: 440, width: 150, height: 240, windows: true, neonSign: true, neonColor: '#FF00FF' },
+  { x: 600, width: 110, height: 300, windows: true, neonSign: false },
+  { x: 720, width: 180, height: 400, windows: true, neonSign: true, neonColor: '#FF3366' },
+  { x: 910, width: 100, height: 260, windows: true, neonSign: false },
+  { x: 1020, width: 140, height: 320, windows: true, neonSign: true, neonColor: '#66FF33' },
+  { x: 1170, width: 220, height: 380, windows: true, neonSign: false },
+  { x: 1400, width: 130, height: 220, windows: true, neonSign: true, neonColor: '#FFCC00' }
 ];
 
 // Initialize the background
@@ -23,16 +23,16 @@ function initializeBackground() {
 // Draw the world background (city skyline and night sky)
 function drawBackground() {
   // Night sky gradient with purple cyberpunk ambience
-  const skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height * 0.7);
+  const skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
   skyGradient.addColorStop(0, '#0D0221'); // Deep dark purple at the top
-  skyGradient.addColorStop(0.5, '#241734'); // Dark purple in the middle
-  skyGradient.addColorStop(1, '#5C2751'); // Brighter purple/pink at horizon
+  skyGradient.addColorStop(0.4, '#171550'); // Dark purple in the middle
+  skyGradient.addColorStop(0.8, '#5C2751'); // Brighter purple/pink at horizon
   
   ctx.fillStyle = skyGradient;
-  ctx.fillRect(0, 0, canvas.width, canvas.height * 0.7);
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
   
   // Distant moon with glow
-  ctx.fillStyle = '#E6E6FA';
+  ctx.fillStyle = '#FFFFFF';
   ctx.beginPath();
   ctx.arc(canvas.width * 0.8, canvas.height * 0.15, 30, 0, Math.PI * 2);
   ctx.fill();
@@ -42,7 +42,8 @@ function drawBackground() {
     canvas.width * 0.8, canvas.height * 0.15, 30,
     canvas.width * 0.8, canvas.height * 0.15, 100
   );
-  moonGlow.addColorStop(0, 'rgba(230, 230, 250, 0.3)');
+  moonGlow.addColorStop(0, 'rgba(255, 255, 255, 0.6)');
+  moonGlow.addColorStop(0.5, 'rgba(230, 230, 250, 0.3)');
   moonGlow.addColorStop(1, 'rgba(230, 230, 250, 0)');
   
   ctx.fillStyle = moonGlow;
@@ -53,20 +54,23 @@ function drawBackground() {
   // Draw stars
   drawStars();
   
+  // Draw clouds
+  drawClouds();
+  
   // Draw distant city skyline
   drawCitySkyline();
 }
 
 // Draw the city skyline (fixed position, doesn't move with camera)
 function drawCitySkyline() {
-  const horizonY = canvas.height * 0.6; // Horizon line
+  const horizonY = canvas.height; // Floor level - no gap to skyline
   
   // Draw all buildings
   cityBuildings.forEach(building => {
     // Building silhouette
-    ctx.fillStyle = '#121212'; // Dark grey for buildings
+    ctx.fillStyle = '#080808'; // Very dark for buildings
     
-    const buildingX = building.x;
+    const buildingX = (building.x - camera.x * 0.1) % (canvas.width * 2); // Slow parallax
     const buildingY = horizonY - building.height;
     const buildingWidth = building.width;
     const buildingHeight = building.height;
@@ -75,34 +79,30 @@ function drawCitySkyline() {
     
     // Windows (if this building has them)
     if (building.windows) {
-      // Random lit windows with purple/cyan glow
-      const windowWidth = 6;
-      const windowHeight = 10;
-      const windowSpacingX = 15;
-      const windowSpacingY = 20;
+      // Smaller, more numerous windows for distant city feel
+      const windowWidth = 3;
+      const windowHeight = 5;
+      const windowSpacingX = 8;
+      const windowSpacingY = 10;
       
       // Calculate how many windows fit
       const windowsPerRow = Math.floor(buildingWidth / windowSpacingX);
       const windowRows = Math.floor(buildingHeight / windowSpacingY);
       
-      // Draw window grid
+      // Draw window grid - no flashing
       for (let row = 0; row < windowRows; row++) {
         for (let col = 0; col < windowsPerRow; col++) {
-          // Only light some windows randomly
-          if (Math.random() > 0.4) {
+          // Determine if window is lit (fixed pattern, not random)
+          if ((row + col) % 3 !== 0) { // Simple pattern - 2/3 of windows lit
             const windowX = buildingX + col * windowSpacingX + (windowSpacingX - windowWidth) / 2;
             const windowY = buildingY + row * windowSpacingY + (windowSpacingY - windowHeight) / 2;
             
-            // Random window color - either yellow, cyan or purple
-            const windowColors = ['rgba(255, 255, 150, 0.8)', 'rgba(0, 255, 255, 0.8)', 'rgba(255, 0, 255, 0.8)'];
-            ctx.fillStyle = windowColors[Math.floor(Math.random() * windowColors.length)];
+            // Window color - either cyan or soft yellow
+            const windowColor = ((row + col) % 5 === 0) ? 
+              'rgba(0, 255, 255, 0.8)' : 'rgba(255, 255, 180, 0.8)';
             
+            ctx.fillStyle = windowColor;
             ctx.fillRect(windowX, windowY, windowWidth, windowHeight);
-            
-            // Window glow
-            const glowColor = ctx.fillStyle.replace('0.8', '0.3');
-            ctx.fillStyle = glowColor;
-            ctx.fillRect(windowX - 2, windowY - 2, windowWidth + 4, windowHeight + 4);
           }
         }
       }
@@ -113,7 +113,7 @@ function drawCitySkyline() {
       ctx.fillStyle = building.neonColor;
       
       const signWidth = building.width * 0.6;
-      const signHeight = 15;
+      const signHeight = 12;
       const signX = buildingX + (building.width - signWidth) / 2;
       const signY = buildingY + building.height * 0.2;
       
@@ -136,6 +136,39 @@ function drawCitySkyline() {
       
       ctx.fillStyle = neonGlow;
       ctx.fillRect(glowX, glowY, glowWidth, glowHeight);
+    }
+  });
+}
+
+// Draw clouds in the night sky
+function drawClouds() {
+  // Purple-tinted clouds like in the screenshot
+  const clouds = [
+    { x: 100, y: 160, width: 200, height: 40 },
+    { x: 300, y: 120, width: 300, height: 60 },
+    { x: 700, y: 180, width: 250, height: 50 },
+    { x: -50, y: 250, width: 1000, height: 70 }
+  ];
+  
+  clouds.forEach(cloud => {
+    // Apply parallax effect
+    const cloudX = (cloud.x - camera.x * 0.05) % (canvas.width * 2);
+    
+    // Create gradient for cloud
+    const gradient = ctx.createLinearGradient(cloudX, cloud.y, cloudX, cloud.y + cloud.height);
+    gradient.addColorStop(0, 'rgba(188, 143, 250, 0.2)'); // Light purple
+    gradient.addColorStop(1, 'rgba(128, 0, 128, 0.1)'); // Dark purple
+    
+    ctx.fillStyle = gradient;
+    
+    // Draw cloud as a series of connected circles
+    for (let i = 0; i < cloud.width; i += 30) {
+      const circleY = cloud.y + Math.sin(i * 0.1) * 10;
+      const radius = 20 + Math.sin(i * 0.2) * 10;
+      
+      ctx.beginPath();
+      ctx.arc(cloudX + i, circleY, radius, 0, Math.PI * 2);
+      ctx.fill();
     }
   });
 }

@@ -12,11 +12,12 @@ const camera = {
 };
 
 // Define the locations of special interactions (in order)
+// Updated Y positions to place them above the road (road is at y=500)
 const locations = [
   {
     id: "instagram",
     x: 300,
-    y: 450,
+    y: 380, // Moved up from 450 to sit above the road
     width: 100,
     height: 120,
     name: "First Interaction",
@@ -26,7 +27,7 @@ const locations = [
   {
     id: "restaurant",
     x: 900,
-    y: 450,
+    y: 380, // Moved up from 450 to sit above the road
     width: 150,
     height: 120,
     name: "First Date",
@@ -36,7 +37,7 @@ const locations = [
   {
     id: "song",
     x: 1500,
-    y: 450,
+    y: 410, // Moved up from 450 to sit above the road (slightly different height due to object type)
     width: 100,
     height: 90,
     name: "Our Song",
@@ -46,7 +47,7 @@ const locations = [
   {
     id: "ramen",
     x: 2100,
-    y: 450,
+    y: 380, // Moved up from 450 to sit above the road
     width: 150,
     height: 120,
     name: "Favorite Food",
@@ -56,7 +57,7 @@ const locations = [
   {
     id: "proposal",
     x: 2700,
-    y: 450,
+    y: 350, // Moved up from 450 to sit above the road
     width: 200,
     height: 150,
     name: "Special Moment",

@@ -28,9 +28,11 @@ function initializeGame() {
   player.y = 450;
   player.direction = 'right';
   
-  // Initialize player face
+  // Initialize player face - Add the path to your face.jpg file here
+  // Make sure your face.jpg file is in the same directory as the game files
   try {
-    initializePlayerFace('face.jpg'); // You'll need to provide this image
+    initializePlayerFace('face.png');
+    console.log("Initialized player face with face.png");
   } catch (e) {
     console.error("Could not initialize player face:", e);
   }
@@ -78,4 +80,25 @@ function initializeGame() {
   
   // Start the game loop
   window.requestAnimationFrame(gameLoop);
+}
+
+// Create hearts animation for the celebration screen
+function createHearts() {
+  const celebration = document.getElementById('celebration');
+  
+  for (let i = 0; i < 50; i++) {
+    setTimeout(() => {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.textContent = '❤️';
+      heart.style.left = Math.random() * 100 + '%';
+      heart.style.animationDelay = Math.random() * 2 + 's';
+      celebration.appendChild(heart);
+      
+      // Remove after animation
+      setTimeout(() => {
+        heart.remove();
+      }, 3000);
+    }, i * 100);
+  }
 }

@@ -26,17 +26,19 @@ const jumpStrength = 12;
 function loadPlayerFace(imagePath) {
   player.faceImage = new Image();
   player.faceImage.onload = function() {
+    console.log("Face image loaded successfully");
     player.faceLoaded = true;
   };
   player.faceImage.onerror = function() {
-    console.error("Could not load face image");
+    console.error("Could not load face image:", imagePath);
     player.faceLoaded = false;
   };
-  player.faceImage.src = imagePath || "face.jpg"; // Default filename if none provided
+  player.faceImage.src = imagePath || "face.png"; // Default filename if none provided
 }
 
 // Initialize player face - call this from main game.js
 function initializePlayerFace(imagePath) {
+  console.log("Initializing player face with:", imagePath);
   loadPlayerFace(imagePath);
 }
 
@@ -71,9 +73,6 @@ function movePlayer() {
     player.verticalSpeed = -jumpStrength;
     player.jumping = true;
     player.onGround = false;
-    
-    // Consume the space key to prevent immediate interaction
-    keys[" "] = false;
   }
   
   // If no horizontal movement keys pressed, player is not moving horizontally
@@ -120,9 +119,6 @@ function checkLocationInteractions() {
       
       // If Space is pressed and player is on ground, trigger the interaction
       if (keys[" "] && player.onGround) {
-        // Prevent immediate re-trigger
-        keys[" "] = false;
-        
         // Start the appropriate interaction
         switch(currentStageId) {
           case "instagram":
@@ -171,7 +167,7 @@ function drawPlayerFacingLeft(x, y) {
   ctx.fillStyle = '#111';
   ctx.fillRect(x + 5, y + player.height/3, player.width - 10, player.height * 2/3);
   
-  // Body
+  // Head outline
   ctx.fillStyle = '#222';
   ctx.fillRect(x, y, player.width, player.height/3);
   
@@ -197,10 +193,11 @@ function drawPlayerFacingLeft(x, y) {
     // Eyes
     ctx.fillStyle = '#212121';
     ctx.fillRect(x + 10, y + 15, 5, 5);
+    ctx.fillRect(x + 25, y + 15, 5, 5);
     
     // Mouth
     const mouthY = player.jumping ? y + 25 : (player.moving ? y + 20 + Math.sin(Date.now() / 200) * 3 : y + 20);
-    ctx.fillRect(x + 10, mouthY, 10, 3);
+    ctx.fillRect(x + 15, mouthY, 10, 3);
   }
   
   // Neon trim on jacket - different colors based on interaction with locations
@@ -243,7 +240,7 @@ function drawPlayerFacingRight(x, y) {
   ctx.fillStyle = '#111';
   ctx.fillRect(x + 5, y + player.height/3, player.width - 10, player.height * 2/3);
   
-  // Body
+  // Head outline
   ctx.fillStyle = '#222';
   ctx.fillRect(x, y, player.width, player.height/3);
   
@@ -264,11 +261,12 @@ function drawPlayerFacingRight(x, y) {
     
     // Eyes
     ctx.fillStyle = '#212121';
+    ctx.fillRect(x + 10, y + 15, 5, 5);
     ctx.fillRect(x + 25, y + 15, 5, 5);
     
     // Mouth
     const mouthY = player.jumping ? y + 25 : (player.moving ? y + 20 + Math.sin(Date.now() / 200) * 3 : y + 20);
-    ctx.fillRect(x + 20, mouthY, 10, 3);
+    ctx.fillRect(x + 15, mouthY, 10, 3);
   }
   
   // Neon trim on jacket - different colors based on interaction with locations
