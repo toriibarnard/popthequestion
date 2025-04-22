@@ -11,6 +11,9 @@ window.onload = function() {
   initializeGame();
 };
 
+// Background music audio element
+let backgroundMusic;
+
 // Game initialization function
 function initializeGame() {
   console.log("Initializing game...");
@@ -28,11 +31,11 @@ function initializeGame() {
   player.y = 450;
   player.direction = 'right';
   
-  // Initialize player face - Add the path to your face.png file here
-  // Make sure your face.png file is in the same directory as the game files
+  // Initialize player face - Add the path to your face.jpg file here
+  // Make sure your face.jpg file is in the same directory as the game files
   try {
     initializePlayerFace('images/face.png');
-    console.log("Initialized player face with face.png");
+    console.log("Initialized player face with face.jpg");
   } catch (e) {
     console.error("Could not initialize player face:", e);
   }
@@ -42,6 +45,9 @@ function initializeGame() {
   
   // Initialize world with cyberpunk night city theme
   initializeWorld();
+  
+  // Set up background music
+  setupBackgroundMusic();
   
   // Set up the "Yes" button for the final question
   document.getElementById('yesButton').addEventListener('click', () => {
@@ -71,15 +77,70 @@ function initializeGame() {
   
   // Set up song for the music interaction
   // In a real implementation, you'd set the actual path to your mp3 file
-  document.getElementById('songPlayer').src = 'path/to/lover_you_shouldve_come_over.mp3';
+  document.getElementById('songPlayer').src = 'lover_you_shouldve_come_over.mp3';
   
   // Initial instructions
-  showDialog("Welcome to our special journey through the neon-lit night! Use LEFT and RIGHT arrow keys to move, and UP or SPACE to jump. Visit each special memory along the path!", 6000);
+  showDialog("Welcome to our special journey through the neon-lit night! Use LEFT and RIGHT arrow keys to move, and UP to jump. Visit each special memory along the path!", 6000);
   
   console.log("Game initialized, starting game loop");
   
   // Start the game loop
   window.requestAnimationFrame(gameLoop);
+}
+
+// Set up background music
+function setupBackgroundMusic() {
+  try {
+    // Create audio element for background music
+    backgroundMusic = new Audio('audio/no-one-noticed.mp3');
+    backgroundMusic.loop = true; // Loop the music
+    backgroundMusic.volume = 0.5; // Set volume to 50%
+    
+    // Start playing when user interacts with the page
+    document.addEventListener('click', function startMusic() {
+      backgroundMusic.play()
+        .then(() => {
+          console.log("Background music started");
+          // Remove the event listener once music has started
+          document.removeEventListener('click', startMusic);
+        })
+        .catch(error => {
+          console.error("Could not play background music:", error);
+        });
+    });
+    
+    // Alternative way to start music with keyboard input
+    document.addEventListener('keydown', function startMusicKey() {
+      backgroundMusic.play()
+        .then(() => {
+          console.log("Background music started");
+          // Remove the event listener once music has started
+          document.removeEventListener('keydown', startMusicKey);
+        })
+        .catch(error => {
+          console.error("Could not play background music:", error);
+        });
+    });
+    
+    console.log("Background music initialized");
+  } catch (e) {
+    console.error("Could not set up background music:", e);
+  }
+  // Set up toggle button for music
+document.getElementById('toggleMusic').addEventListener('click', function() {
+  if (backgroundMusic.paused) {
+    backgroundMusic.play()
+      .then(() => {
+        console.log("Background music resumed");
+      })
+      .catch(error => {
+        console.error("Could not play background music:", error);
+      });
+  } else {
+    backgroundMusic.pause();
+    console.log("Background music paused");
+  }
+});
 }
 
 // Create hearts animation for the celebration screen
