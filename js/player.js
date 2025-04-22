@@ -120,6 +120,9 @@ function checkLocationInteractions() {
       
       // If Space is pressed and player is on ground, trigger the interaction
       if (keys[" "] && player.onGround) {
+        // Prevent immediate re-trigger
+        keys[" "] = false;
+        
         // Start the appropriate interaction
         switch(currentStageId) {
           case "instagram":
@@ -131,11 +134,14 @@ function checkLocationInteractions() {
           case "song":
             showInteraction("songInteraction");
             break;
-          case "ramen":
-            showInteraction("ramenInteraction");
+          case "camera":
+            showInteraction("cameraInteraction");
             break;
           case "dateRanking":
             showInteraction("dateRankingInteraction");
+            break;
+          case "ramen":
+            showInteraction("ramenInteraction");
             break;
           case "proposal":
             showFinalQuestion();

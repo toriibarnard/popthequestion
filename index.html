@@ -55,6 +55,20 @@
         <audio id="songPlayer" src="" style="display: none;"></audio>
       </div>
     </div>
+
+    <!-- Camera/Picture Puzzle Interaction -->
+    <div id="cameraInteraction" class="interaction-popup">
+      <h3>Our Favorite Picture</h3>
+      <div class="camera-container">
+        <p>Let's put our special picture back together! Rearrange the tiles to complete the image.</p>
+        
+        <div id="puzzleContainer" class="puzzle-container">
+          <!-- Puzzle pieces will be added here by the script -->
+        </div>
+        
+        <button id="checkPuzzleButton" class="interaction-button">Complete Picture</button>
+      </div>
+    </div>
     
     <!-- Favorite Food Interaction -->
     <div id="ramenInteraction" class="interaction-popup">
@@ -111,9 +125,10 @@
   <script src="js/world/locations/location-instagram.js"></script>
   <script src="js/world/locations/location-restaurant.js"></script>
   <script src="js/world/locations/location-music.js"></script>
+  <script src="js/world/locations/location-camera.js"></script>
+  <script src="js/world/locations/location-date-ranking.js"></script>
   <script src="js/world/locations/location-ramen.js"></script>
   <script src="js/world/locations/location-gazebo.js"></script>
-  <script src="js/world/locations/location-date-ranking.js"></script>
   <script src="js/world/locations/locations-main.js"></script>
   
   <script src="js/world/world-main.js"></script>
@@ -122,9 +137,9 @@
   <script src="js/interactions/instagram.js"></script>
   <script src="js/interactions/restaurant.js"></script>
   <script src="js/interactions/song.js"></script>
-  <script src="js/interactions/ramen.js"></script>
-  <!-- Need to add date-ranking.js interaction file when ready -->
+  <script src="js/interactions/camera.js"></script>
   <script src="js/interactions/date-ranking.js"></script>
+  <script src="js/interactions/ramen.js"></script>
   
   <!-- Main game logic -->
   <script src="js/game.js"></script>

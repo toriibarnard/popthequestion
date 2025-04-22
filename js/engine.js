@@ -12,7 +12,8 @@ let gameState = {
     "instagram",
     "restaurant",
     "song",
-    "dateRanking", // New stage added
+    "camera",
+    "dateRanking",
     "ramen",
     "proposal"
   ],
@@ -20,7 +21,8 @@ let gameState = {
     instagram: false,
     restaurant: false,
     song: false,
-    dateRanking: false, // New stage added
+    camera: false,
+    dateRanking: false,
     ramen: false,
     proposal: false
   },
@@ -96,6 +98,10 @@ function completeStage(stage) {
     if (stage === "ramen") {
       // Show a special dialog directing to the final spot
       showDialog("You've completed all our memories! Head to the special gazebo at the end of the path for a surprise...", 6000);
+    }
+    // Add special message for camera stage completion
+    else if (stage === "camera") {
+      showDialog("Our picture looks perfect now! Let's check out our date ranking next.", 5000);
     }
     // Add special message for dateRanking stage completion
     else if (stage === "dateRanking") {

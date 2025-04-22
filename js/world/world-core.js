@@ -1,7 +1,7 @@
 // Core world functionality - handles the map dimensions, camera, and main rendering
 
 // Map dimensions (increased to accommodate more spread out locations)
-const mapWidth = 3500; // Increased from 3000 to fit all the new locations
+const mapWidth = 3700; // Increased from 3000 to fit all the new locations
 const mapHeight = 600;
 
 // Camera position (only moves horizontally)
@@ -11,40 +11,14 @@ const camera = {
   height: 600
 };
 
-// Update gameState.stages array to include the new dateRanking location
-// Make sure to update this in engine.js
-/*
-gameState.stages = [
-  "instagram",
-  "restaurant",
-  "song",
-  "dateRanking", // new stage
-  "ramen",
-  "proposal"
-];
-
-// Also update the stagesCompleted object
-gameState.stagesCompleted = {
-  instagram: false,
-  restaurant: false,
-  song: false,
-  dateRanking: false, // new stage
-  ramen: false,
-  proposal: false
-};
-*/
-
 // Update camera to follow player horizontally only
 function updateCamera() {
   // Center camera on player
-  camera.x = player.x - (camera.width / 2);
+  camera.x = player.x - camera.width / 2;
   
-  // Clamp camera to map bounds and ensure player stays visible
+  // Clamp camera to map bounds
   if (camera.x < 0) camera.x = 0;
   if (camera.x > mapWidth - camera.width) camera.x = mapWidth - camera.width;
-  
-  // Debug
-  console.log("Camera bounds:", camera.x, camera.x + camera.width);
 }
 
 // Check if an object is in camera view
@@ -154,6 +128,17 @@ function drawMiniMap() {
         dotX, miniMapY + miniMapHeight/2
       );
       ctx.fill();
+    } else if (location.id === 'camera') {
+      // Camera icon for the camera location
+      ctx.fillStyle = isCompleted ? '#A0A0A0' : (isActive ? '#3F51B5' : '#FFFFFF');
+      ctx.beginPath();
+      ctx.arc(dotX, miniMapY + miniMapHeight/2, 4, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Small camera marking
+      if (isActive) {
+        ctx.fillRect(dotX - 3, miniMapY + miniMapHeight/2 - 3, 6, 2);
+      }
     } else {
       // Regular dot for other locations
       ctx.fillStyle = isCompleted ? '#A0A0A0' : (isActive ? '#FF6B6B' : '#FFFFFF');

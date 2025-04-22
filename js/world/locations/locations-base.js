@@ -39,16 +39,20 @@ function drawLocations() {
             drawMusicShop(x, y, location);
             break;
             
+          case 'camera':
+            drawCamera(x, y, location);
+            break;
+            
+          case 'dateRanking':
+            drawDateRanking(x, y, location);
+            break;
+            
           case 'ramenShop':
             drawRamenShop(x, y, location);
             break;
             
           case 'gazebo':
             drawGazebo(x, y, location);
-            break;
-            
-          case 'dateRanking':
-            drawDateRanking(x, y, location);
             break;
         }
         

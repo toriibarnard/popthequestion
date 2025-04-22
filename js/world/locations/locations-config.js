@@ -1,7 +1,7 @@
 // Configuration file for locations - Update this to add or modify locations
 
 // Define the locations of special interactions (in order)
-// Updated with more spread out locations and added new date ranking location
+// Updated with more spread out locations and added camera location
 const locations = [
     {
       id: "instagram",
@@ -34,8 +34,28 @@ const locations = [
       objectType: "musicShop"
     },
     {
+      id: "camera",
+      x: 1900, // New camera location
+      y: 390, // Above the road
+      width: 120,
+      height: 120,
+      name: "Our Picture",
+      description: "Our favorite picture together",
+      objectType: "camera"
+    },
+    {
+      id: "dateRanking",
+      x: 2400, // Moved further to make space for camera
+      y: 370, // Above the road
+      width: 130,
+      height: 130,
+      name: "Our Dates",
+      description: "Ranking our favorite dates",
+      objectType: "dateRanking"
+    },
+    {
       id: "ramen",
-      x: 2600, // Moved further to make space
+      x: 2900, // Moved further to make space
       y: 380, // Above the road
       width: 150,
       height: 120,
@@ -44,18 +64,8 @@ const locations = [
       objectType: "ramenShop"
     },
     {
-        id: "dateRanking",
-        x: 2000, // New location between song and ramen
-        y: 370, // Above the road
-        width: 130,
-        height: 130,
-        name: "Our Dates",
-        description: "Ranking our favorite dates",
-        objectType: "dateRanking"
-    },
-    {
       id: "proposal",
-      x: 3200, // Moved further to make space
+      x: 3400, // Moved further to make space
       y: 350, // Above the road
       width: 200,
       height: 150,
@@ -66,4 +76,4 @@ const locations = [
   ];
   
   // Update world-core.js to set the correct map width based on furthest location
-  // Recommend updating mapWidth to at least 3500 to accommodate all locations
+  // Recommend updating mapWidth to at least 3700 to accommodate all locations
