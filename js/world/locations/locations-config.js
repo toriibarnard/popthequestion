@@ -1,0 +1,69 @@
+// Configuration file for locations - Update this to add or modify locations
+
+// Define the locations of special interactions (in order)
+// Updated with more spread out locations and added new date ranking location
+const locations = [
+    {
+      id: "instagram",
+      x: 300,
+      y: 380, // Above the road
+      width: 100,
+      height: 120,
+      name: "First Interaction",
+      description: "Our first Instagram DM 'hey gorgeous'",
+      objectType: "phoneBox"
+    },
+    {
+      id: "restaurant",
+      x: 800,
+      y: 380, // Above the road
+      width: 150,
+      height: 120,
+      name: "First Date",
+      description: "Restauranté Amano",
+      objectType: "restaurant"
+    },
+    {
+      id: "song",
+      x: 1400,
+      y: 410, // Above the road, slightly different height due to object type
+      width: 100,
+      height: 90,
+      name: "Our Song",
+      description: "Lover, You Should've Come Over by Joel Plaskett",
+      objectType: "musicShop"
+    },
+    {
+      id: "ramen",
+      x: 2600, // Moved further to make space
+      y: 380, // Above the road
+      width: 150,
+      height: 120,
+      name: "Favorite Food",
+      description: "Buta Ramen",
+      objectType: "ramenShop"
+    },
+    {
+        id: "dateRanking",
+        x: 2000, // New location between song and ramen
+        y: 370, // Above the road
+        width: 130,
+        height: 130,
+        name: "Our Dates",
+        description: "Ranking our favorite dates",
+        objectType: "dateRanking"
+    },
+    {
+      id: "proposal",
+      x: 3200, // Moved further to make space
+      y: 350, // Above the road
+      width: 200,
+      height: 150,
+      name: "Special Moment",
+      description: "Will you go out with me?",
+      objectType: "gazebo"
+    }
+  ];
+  
+  // Update world-core.js to set the correct map width based on furthest location
+  // Recommend updating mapWidth to at least 3500 to accommodate all locations

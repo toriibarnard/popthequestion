@@ -134,6 +134,9 @@ function checkLocationInteractions() {
           case "ramen":
             showInteraction("ramenInteraction");
             break;
+          case "dateRanking":
+            showInteraction("dateRankingInteraction");
+            break;
           case "proposal":
             showFinalQuestion();
             gameState.activeInteraction = "finalQuestion";

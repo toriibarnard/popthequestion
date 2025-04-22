@@ -4,7 +4,7 @@
 let canvas;
 let ctx;
 
-// Game state
+// Updated game state with new dateRanking stage
 let gameState = {
   activeInteraction: null,
   currentStage: 0,
@@ -12,6 +12,7 @@ let gameState = {
     "instagram",
     "restaurant",
     "song",
+    "dateRanking", // New stage added
     "ramen",
     "proposal"
   ],
@@ -19,6 +20,7 @@ let gameState = {
     instagram: false,
     restaurant: false,
     song: false,
+    dateRanking: false, // New stage added
     ramen: false,
     proposal: false
   },
@@ -94,6 +96,10 @@ function completeStage(stage) {
     if (stage === "ramen") {
       // Show a special dialog directing to the final spot
       showDialog("You've completed all our memories! Head to the special gazebo at the end of the path for a surprise...", 6000);
+    }
+    // Add special message for dateRanking stage completion
+    else if (stage === "dateRanking") {
+      showDialog("Thanks for ranking our dates! Let's head to Buta Ramen for some delicious Tantanmen!", 5000);
     }
   } else {
     // If this was the proposal stage, the game is truly complete

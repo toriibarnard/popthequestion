@@ -68,6 +68,16 @@
         <button id="checkRamenButton" class="interaction-button">That's our order!</button>
       </div>
     </div>
+
+    <!-- Date Ranking Interaction -->
+    <div id="dateRankingInteraction" class="interaction-popup">
+      <h3>Ranking Our Special Dates</h3>
+      <div id="dateRankingContainer" class="memory-container">
+        <p>We've had so many amazing dates! Can you rank them from your favorite to least favorite?</p>
+        <!-- The dates container will be inserted here by the script -->
+        <button id="checkRankingButton" class="interaction-button">Submit Your Ranking</button>
+      </div>
+    </div>
     
     <!-- Will You Go Out With Me Question -->
     <div id="finalQuestion">
@@ -90,11 +100,22 @@
   <!-- Game objects and player -->
   <script src="js/player.js"></script>
   
-  <!-- World components - simplified to just background and foreground -->
+  <!-- World components -->
   <script src="js/world/world-core.js"></script>
   <script src="js/world/world-background.js"></script>
   <script src="js/world/world-foreground.js"></script>
-  <script src="js/world/world-locations.js"></script>
+  
+  <!-- Locations - new modular organization -->
+  <script src="js/world/locations/locations-config.js"></script>
+  <script src="js/world/locations/locations-base.js"></script>
+  <script src="js/world/locations/location-instagram.js"></script>
+  <script src="js/world/locations/location-restaurant.js"></script>
+  <script src="js/world/locations/location-music.js"></script>
+  <script src="js/world/locations/location-ramen.js"></script>
+  <script src="js/world/locations/location-gazebo.js"></script>
+  <script src="js/world/locations/location-date-ranking.js"></script>
+  <script src="js/world/locations/locations-main.js"></script>
+  
   <script src="js/world/world-main.js"></script>
   
   <!-- Interactions -->
@@ -102,6 +123,8 @@
   <script src="js/interactions/restaurant.js"></script>
   <script src="js/interactions/song.js"></script>
   <script src="js/interactions/ramen.js"></script>
+  <!-- Need to add date-ranking.js interaction file when ready -->
+  <script src="js/interactions/date-ranking.js"></script>
   
   <!-- Main game logic -->
   <script src="js/game.js"></script>

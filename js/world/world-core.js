@@ -1,7 +1,7 @@
 // Core world functionality - handles the map dimensions, camera, and main rendering
 
-// Map dimensions (larger than viewport to allow scrolling)
-const mapWidth = 3000;
+// Map dimensions (increased to accommodate more spread out locations)
+const mapWidth = 3500; // Increased from 3000 to fit all the new locations
 const mapHeight = 600;
 
 // Camera position (only moves horizontally)
@@ -11,69 +11,40 @@ const camera = {
   height: 600
 };
 
-// Define the locations of special interactions (in order)
-// Updated Y positions to place them above the road (road is at y=500)
-const locations = [
-  {
-    id: "instagram",
-    x: 300,
-    y: 380, // Moved up from 450 to sit above the road
-    width: 100,
-    height: 120,
-    name: "First Interaction",
-    description: "Our first Instagram DM 'hey gorgeous'",
-    objectType: "phoneBox"
-  },
-  {
-    id: "restaurant",
-    x: 900,
-    y: 380, // Moved up from 450 to sit above the road
-    width: 150,
-    height: 120,
-    name: "First Date",
-    description: "Restauranté Amano",
-    objectType: "restaurant"
-  },
-  {
-    id: "song",
-    x: 1500,
-    y: 410, // Moved up from 450 to sit above the road (slightly different height due to object type)
-    width: 100,
-    height: 90,
-    name: "Our Song",
-    description: "Lover, You Should've Come Over by Joel Plaskett",
-    objectType: "musicShop"
-  },
-  {
-    id: "ramen",
-    x: 2100,
-    y: 380, // Moved up from 450 to sit above the road
-    width: 150,
-    height: 120,
-    name: "Favorite Food",
-    description: "Buta Ramen",
-    objectType: "ramenShop"
-  },
-  {
-    id: "proposal",
-    x: 2700,
-    y: 350, // Moved up from 450 to sit above the road
-    width: 200,
-    height: 150,
-    name: "Special Moment",
-    description: "Will you go out with me?",
-    objectType: "gazebo"
-  }
+// Update gameState.stages array to include the new dateRanking location
+// Make sure to update this in engine.js
+/*
+gameState.stages = [
+  "instagram",
+  "restaurant",
+  "song",
+  "dateRanking", // new stage
+  "ramen",
+  "proposal"
 ];
+
+// Also update the stagesCompleted object
+gameState.stagesCompleted = {
+  instagram: false,
+  restaurant: false,
+  song: false,
+  dateRanking: false, // new stage
+  ramen: false,
+  proposal: false
+};
+*/
 
 // Update camera to follow player horizontally only
 function updateCamera() {
   // Center camera on player
-  camera.x = player.x - camera.width / 2;
+  camera.x = player.x - (camera.width / 2);
   
-  // Clamp camera to map bounds
+  // Clamp camera to map bounds and ensure player stays visible
   if (camera.x < 0) camera.x = 0;
   if (camera.x > mapWidth - camera.width) camera.x = mapWidth - camera.width;
+  
+  // Debug
+  console.log("Camera bounds:", camera.x, camera.x + camera.width);
 }
 
 // Check if an object is in camera view

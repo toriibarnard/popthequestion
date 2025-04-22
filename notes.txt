@@ -4,3 +4,10 @@ Points of interest
 * first date - restauranté amano
 * our favourite song - lover, you shouldve came over by joel plaskett
 * our favourite food place - buta ramen
+* date ranker - display board
+    - mercanatile and karaoke
+    - first date
+    - innspring rekindle
+    - secret underground bar
+    - chaa baa thai and playdium
+
