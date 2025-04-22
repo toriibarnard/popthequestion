@@ -1,4 +1,5 @@
 // Favorite song interaction - Enhanced with cyberpunk music theme
+// Fixed to maintain background visibility
 
 // Initialize the song interaction
 function initSongInteraction() {
@@ -22,7 +23,14 @@ function initSongInteraction() {
   window.showInteraction = function(interactionId) {
     originalShowInteraction(interactionId);
     if (interactionId === 'songInteraction') {
-      // Apply cyberpunk styling to the interaction popup
+      // First make the popup itself transparent to show the background
+      const popup = document.getElementById('songInteraction');
+      if (popup) {
+        // Critical fix: Set background to highly transparent
+        popup.style.backgroundColor = 'rgba(10, 10, 20, 0.7)'; // Much more transparent
+      }
+      
+      // Then apply the rest of the styling
       applyCyberpunkStyling();
       
       // Set focus on the first input
@@ -37,12 +45,13 @@ function initSongInteraction() {
   function applyCyberpunkStyling() {
     const popup = document.getElementById('songInteraction');
     
-    // Apply neon glow and dark background
-    popup.style.backgroundColor = 'rgba(10, 10, 20, 0.95)';
+    // Make sure the popup is scrollable and keeps the background visible
+    popup.style.maxHeight = '90vh';
+    popup.style.overflowY = 'auto';
+    
+    // Apply neon glow but keep background transparent
     popup.style.boxShadow = '0 0 20px rgba(29, 185, 84, 0.7), 0 0 40px rgba(29, 185, 84, 0.4)';
     popup.style.border = '1px solid rgba(255, 255, 255, 0.1)';
-    popup.style.position = 'relative';
-    popup.style.overflow = 'hidden';
     
     // Add musical notes background
     const backgroundNotes = document.createElement('div');
@@ -65,6 +74,10 @@ function initSongInteraction() {
       header.style.paddingBottom = '10px';
       header.style.position = 'relative';
       header.style.zIndex = '1';
+      header.style.marginTop = '10px';
+      header.style.backgroundColor = 'rgba(10, 10, 20, 0.5)'; // Semi-transparent background
+      header.style.padding = '10px';
+      header.style.borderRadius = '10px';
     }
     
     // Add "Our Song" text with special styling
@@ -85,12 +98,13 @@ function initSongInteraction() {
     // Style the song container
     const songContainer = popup.querySelector('.song-container');
     if (songContainer) {
-      songContainer.style.backgroundColor = '#1E1E24';
+      songContainer.style.backgroundColor = 'rgba(30, 30, 36, 0.6)'; // Very transparent
       songContainer.style.borderRadius = '10px';
       songContainer.style.padding = '20px';
+      songContainer.style.margin = '15px';
       songContainer.style.boxShadow = 'inset 0 0 10px rgba(0, 0, 0, 0.5)';
-      songContainer.style.position = 'relative';
-      songContainer.style.zIndex = '1';
+      songContainer.style.backdropFilter = 'blur(3px)'; // Add slight blur effect for better readability
+      songContainer.style.webkitBackdropFilter = 'blur(3px)'; // Safari support
     }
     
     // Style lyric container
@@ -102,6 +116,15 @@ function initSongInteraction() {
       lyricContainer.style.borderRadius = '10px';
       lyricContainer.style.boxShadow = '0 0 15px rgba(29, 185, 84, 0.2)';
       lyricContainer.style.position = 'relative';
+    }
+    
+    // Style the paragraph that introduces the lyrics
+    const introP = lyricContainer.querySelector('p');
+    if (introP) {
+      introP.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+      introP.style.padding = '8px';
+      introP.style.borderRadius = '5px';
+      introP.style.color = '#fff';
     }
     
     // Style the lyric lines
@@ -119,6 +142,9 @@ function initSongInteraction() {
       line.style.letterSpacing = '0.5px';
       line.style.textAlign = 'center';
       line.style.position = 'relative';
+      line.style.backgroundColor = 'rgba(0, 0, 0, 0.4)'; // Semi-transparent background
+      line.style.padding = '8px';
+      line.style.borderRadius = '5px';
       
       // Add musical note decorations
       if (index % 2 === 0) {
@@ -149,7 +175,7 @@ function initSongInteraction() {
     // Style the input fields
     const inputs = lyricGame.querySelectorAll('input');
     inputs.forEach(input => {
-      input.style.backgroundColor = 'rgba(29, 185, 84, 0.1)';
+      input.style.backgroundColor = 'rgba(29, 185, 84, 0.2)'; // More visible
       input.style.border = 'none';
       input.style.borderBottom = '2px solid #1DB954';
       input.style.color = '#1DB954';
@@ -165,12 +191,12 @@ function initSongInteraction() {
       // Add focus effects
       input.addEventListener('focus', () => {
         input.style.boxShadow = '0 0 10px rgba(29, 185, 84, 0.5)';
-        input.style.backgroundColor = 'rgba(29, 185, 84, 0.2)';
+        input.style.backgroundColor = 'rgba(29, 185, 84, 0.3)';
       });
       
       input.addEventListener('blur', () => {
         input.style.boxShadow = '0 0 5px rgba(29, 185, 84, 0.2)';
-        input.style.backgroundColor = 'rgba(29, 185, 84, 0.1)';
+        input.style.backgroundColor = 'rgba(29, 185, 84, 0.2)';
       });
       
       // Prevent space from triggering game jump
@@ -181,7 +207,7 @@ function initSongInteraction() {
       });
     });
     
-    // Style button
+    // Style button - make it more visible against transparent background
     if (checkLyricsButton) {
       checkLyricsButton.style.backgroundColor = '#1DB954';
       checkLyricsButton.style.color = '#000';
@@ -195,6 +221,8 @@ function initSongInteraction() {
       checkLyricsButton.style.cursor = 'pointer';
       checkLyricsButton.style.position = 'relative';
       checkLyricsButton.style.zIndex = '2';
+      checkLyricsButton.style.margin = '20px auto';
+      checkLyricsButton.style.display = 'block';
       
       // Pulsing animation
       checkLyricsButton.style.animation = 'pulse 2s infinite';
@@ -307,6 +335,9 @@ function initSongInteraction() {
         margin: 15px 0;
         position: relative;
         transition: all 0.5s ease;
+        background-color: rgba(0, 0, 0, 0.4);
+        padding: 10px;
+        border-radius: 5px;
       }
       
       .success-lyrics p:nth-child(odd)::before {
@@ -476,6 +507,9 @@ function initSongInteraction() {
         celebrationMessage.style.opacity = '0';
         celebrationMessage.style.textShadow = '0 0 10px rgba(29, 185, 84, 0.7)';
         celebrationMessage.style.animation = 'glow 2s infinite';
+        celebrationMessage.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        celebrationMessage.style.padding = '10px';
+        celebrationMessage.style.borderRadius = '10px';
         lyricGame.appendChild(celebrationMessage);
         
         // Fade in the celebration message
@@ -511,7 +545,7 @@ function initSongInteraction() {
       validationMessage.style.textAlign = 'center';
       validationMessage.style.padding = '10px';
       validationMessage.style.marginTop = '10px';
-      validationMessage.style.backgroundColor = 'rgba(255, 68, 68, 0.1)';
+      validationMessage.style.backgroundColor = 'rgba(255, 68, 68, 0.3)'; // More visible
       validationMessage.style.borderRadius = '5px';
       validationMessage.style.animation = 'fadeIn 0.5s';
       
