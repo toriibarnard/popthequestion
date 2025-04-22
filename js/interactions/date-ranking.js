@@ -7,11 +7,11 @@ function initDateRankingInteraction() {
     
     // Our dates to be ranked - updated with your specific dates
     const dates = [
-      { id: "mercantile", name: "Mercantile and Karaoke", description: "That night at Mercantile followed by karaoke fun." },
+      { id: "mercantile", name: "Mercantile and Karaoke", description: "The shitty service and shitty song selection that we made the most of" },
       { id: "firstdate", name: "First Date", description: "Our very first date where we got to know each other." },
-      { id: "innspring", name: "Innspring Rekindle", description: "Our special time reconnecting at Innspring." },
-      { id: "underground", name: "Secret Underground Board", description: "Exploring the hidden underground board game spot." },
-      { id: "thaigaming", name: "Chaa Baa Thai and Playdium", description: "Thai food dinner followed by gaming at Playdium." }
+      { id: "innspring", name: "Innspring Rekindle", description: "Our special reconnection, and finally being able to enjoy the food without taking 10 bathroom breaks" },
+      { id: "underground", name: "Secret Speakeasy", description: "Having some drinks at the underground bar - that disco inferno was not worth it" },
+      { id: "thaigaming", name: "Chaa Baa Thai and Playdium", description: "Some yummy thai food followed by a bullshit excuse of a soccer arcade game" }
     ];
     
     // Create a container for the dates if it doesn't exist

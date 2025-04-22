@@ -91,11 +91,11 @@ function initInstagramInteraction() {
   function generateHint(attemptCount) {
     const hintTexts = [
       "Think about what you said when we first met in DMs...",
-      "It starts with 'h'...",
-      "It starts with 'heyy'...",
-      "It's a greeting followed by a question...",
-      "Try: 'heyy, how are...'",
-      "The answer is 'heyy, how are you?'"
+      "It starts with 'h'... do better sienna",
+      "It starts with 'heyy'... this is a hard watch",
+      "It's a greeting followed by a question... use that little brain of yours",
+      "Try: 'heyy, how are...' if you dont get it after this hint...",
+      "The answer is 'heyy, how are you?' spoonfed"
     ];
     
     // Return appropriate hint based on attempt count (max out at the last hint)
@@ -147,7 +147,7 @@ function initInstagramInteraction() {
     
     const successText = document.createElement('div');
     successText.className = 'dm-text success-text';
-    successText.textContent = "That's exactly right! ✓";
+    successText.textContent = "There you go sie! ✓";
     successText.style.backgroundColor = '#335533';
     successText.style.color = '#99FF99';
     successText.style.fontWeight = 'bold';

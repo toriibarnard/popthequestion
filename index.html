@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Special Moments - Will You Go Out With Me?</title>
+  <title>popthequestion</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="gameContainer">
     <canvas id="gameCanvas" width="800" height="600"></canvas>
-    <div id="instructions">Use arrow keys or WASD to move. Visit our special memories in order!</div>
+    <div id="instructions">Visit some of our memories in order!</div>
     <div id="dialog"></div>
     
     <!-- Instagram DM Interaction -->
@@ -18,7 +18,7 @@
       <div class="dm-container">
         <div class="dm-message">
           <div class="dm-header">
-            <span class="dm-username">You</span>
+            <span class="dm-username">Torii</span>
             <span class="dm-time">8:37 PM</span>
           </div>
           <div class="dm-text">hey gorgeous</div>
@@ -31,9 +31,9 @@
     
     <!-- Restaurant Date Interaction -->
     <div id="restaurantInteraction" class="interaction-popup">
-      <h3>Our First Date at Restauranté Amano</h3>
+      <h3>Our First Date - Restauranté Amano</h3>
       <div class="memory-container">
-        <p>Remember our first date? We had such an amazing time.</p>
+        <p>Remember our first date?</p>
         <div class="memory-game-simple">
           <p>Arrange these moments in the order they happened:</p>
           <div id="dateMemoryItems" class="memory-items"></div>
@@ -48,7 +48,7 @@
       <div class="song-container">
         <p>"Lover, You Should've Come Over" by Joel Plaskett</p>
         <div class="lyric-container" id="lyricContainer">
-          <p>Complete the missing lyrics:</p>
+          <p>Fill in the blanks:</p>
           <div id="lyricGame"></div>
         </div>
         <button id="checkLyricsButton" class="interaction-button">Check Lyrics</button>
@@ -58,9 +58,9 @@
 
     <!-- Camera/Picture Puzzle Interaction -->
     <div id="cameraInteraction" class="interaction-popup">
-      <h3>Our Favorite Picture</h3>
+      <h3>A picture of us</h3>
       <div class="camera-container">
-        <p>Let's put our special picture back together! Rearrange the tiles to complete the image.</p>
+        <p>Let's put our special picture back together!</p>
         
         <div id="puzzleContainer" class="puzzle-container">
           <!-- Puzzle pieces will be added here by the script -->
@@ -74,9 +74,9 @@
     <div id="ramenInteraction" class="interaction-popup">
       <h3>Our Favorite Food - Buta Ramen</h3>
       <div class="food-container">
-        <p>We always get so excited about eating here!</p>
+        <p>We can't stay away from this place.</p>
         <div class="food-game">
-          <p>What toppings do we usually get? Select all that apply:</p>
+          <p>What do we usually get? Select all that apply:</p>
           <div id="toppingOptions" class="topping-options"></div>
         </div>
         <button id="checkRamenButton" class="interaction-button">That's our order!</button>
@@ -85,11 +85,11 @@
 
     <!-- Date Ranking Interaction -->
     <div id="dateRankingInteraction" class="interaction-popup">
-      <h3>Ranking Our Special Dates</h3>
+      <h3>Ranking Some of our Favourite Dates</h3>
       <div id="dateRankingContainer" class="memory-container">
-        <p>We've had so many amazing dates! Can you rank them from your favorite to least favorite?</p>
+        <p>We've had so many amazing dates, but here are my top 5. You have to rank them!</p>
         <!-- The dates container will be inserted here by the script -->
-        <button id="checkRankingButton" class="interaction-button">Submit Your Ranking</button>
+        <button id="checkRankingButton" class="interaction-button">Submit</button>
       </div>
     </div>
     
