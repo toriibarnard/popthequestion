@@ -13,8 +13,8 @@ function initRamenInteraction() {
   
   // All Tantanmen toppings options
   const toppings = [
-    { name: "Noodles", id: "noodles", description: "Freshly made ramen noodles" },
-    { name: "Tantanmen Sauce", id: "sauce", description: "Spicy sesame sauce" },
+    { name: "Noodles", id: "noodles", description: "Fresh ramen noodles" },
+    { name: "Tantanmen Sauce", id: "sauce", description: "Spicy sauce" },
     { name: "Ground Pork", id: "pork", description: "Seasoned minced pork" },
     { name: "Menma (Bamboo Shoots)", id: "menma", description: "Fermented bamboo shoots" },
     { name: "Ajitama (Soft Boiled Egg)", id: "egg", description: "Marinated soft-boiled egg" },
@@ -376,11 +376,11 @@ function initRamenInteraction() {
       if (correctSelected.length === correctToppings.length && incorrectSelected.length === 0) {
         // Perfect selection
         responseHTML = `
-          <p>🎯 <strong>Perfect choice!</strong> You know exactly how we like our Tantanmen!</p>
+          <p>🎯 <strong>Perfect Choices!</strong> You know exactly how we like it</p>
           <p>🍜 I love how we always order it with ${selectedToppings.map(id => 
             toppings.find(t => t.id === id).name
           ).join(', ')}.</p>
-          <p>💖 Buta Ramen has been our special place, and I cherish every meal we've shared there.</p>
+          <p>Buta Ramen is our place.. not you and lanayas. I love every bite we get there together.</p>
         `;
       } else if (correctSelected.length > 0) {
         // Got some right but not perfect
@@ -392,7 +392,7 @@ function initRamenInteraction() {
         `;
         
         if (incorrectSelected.length > 0) {
-          responseHTML += `<p>Though we usually skip: ${incorrectSelected.map(id => 
+          responseHTML += `<p>We usually skip: ${incorrectSelected.map(id => 
             toppings.find(t => t.id === id).name
           ).join(', ')}.</p>`;
         }
@@ -403,15 +403,15 @@ function initRamenInteraction() {
           ).join(', ')}.</p>`;
         }
         
-        responseHTML += `<p>💖 Nevertheless, Buta Ramen has been our special place, and I cherish every meal we've shared there.</p>`;
+        responseHTML += `<p>Buta Ramen is our place.. not you and lanayas. I love every bite we get there together.</p>`;
       } else {
         // Totally wrong selections
         responseHTML = `
-          <p>🍜 Interesting choices! While not our usual order, I'm sure it would be delicious too!</p>
+          <p>🍜 HORRIBLE SELECTION</p>
           <p>We typically get our Tantanmen with: <strong>${correctToppings.map(id => 
             toppings.find(t => t.id === id).name
           ).join(', ')}</strong>.</p>
-          <p>💖 Buta Ramen has been our special place, and I cherish every meal we've shared there.</p>
+          <p>Buta Ramen is still our place.. not you and lanayas. I love every bite we get there together.</p>
         `;
       }
       
@@ -419,7 +419,7 @@ function initRamenInteraction() {
       toppingOptions.appendChild(message);
       
       // Change button text
-      checkRamenButton.textContent = 'Continue Our Journey';
+      checkRamenButton.textContent = 'Continue';
       
       // Add pulsing animation to button
       checkRamenButton.style.animation = 'pulse 2s infinite';
@@ -440,7 +440,7 @@ function initRamenInteraction() {
       
       const validationMessage = document.createElement('div');
       validationMessage.className = 'validation-message';
-      validationMessage.textContent = 'Please select at least one topping!';
+      validationMessage.textContent = 'Select at least one topping!';
       validationMessage.style.color = '#ff4444';
       validationMessage.style.textAlign = 'center';
       validationMessage.style.padding = '10px';
