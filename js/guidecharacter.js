@@ -120,7 +120,7 @@ function handleIntroProgression() {
   
   if (guide.introStep === 1) {
     // First click shows the second intro message
-    showGuideMessage("Follow me and play some fun mini games that are based on our memories!", 5000);
+    showGuideMessage("Follow me and play some fun mini games that are based on our memories!", 8000);
   } else if (guide.introStep === 2) {
     // Second click clears the message and starts the guide movement
     guide.message = "";
@@ -242,9 +242,9 @@ function moveGuide(deltaTime) {
       guide.direction = 'right';
     }
     
-    // Jump regularly while waiting (approximately every 3 seconds)
+    // Jump regularly while waiting (approximately every 2 seconds)
     const currentTime = Date.now();
-    if (guide.onGround && (currentTime - guide.lastJumpTime > 3000)) {
+    if (guide.onGround && (currentTime - guide.lastJumpTime > 2000)) {
       guide.verticalSpeed = -guideJumpStrength * 0.8;
       guide.jumping = true;
       guide.onGround = false;
@@ -637,7 +637,7 @@ function drawGuideFacingRight(x, y) {
 
 // Show initial guide dialog
 function showInitialGuideDialog() {
-  showGuideMessage("Hi Sienna! Happy for you to be here today.", 5000);
+  showGuideMessage("Hi Sienna! Happy for you to be here today.", 15000);
 }
 
 // Function to be called when a stage is completed
