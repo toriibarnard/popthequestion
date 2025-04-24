@@ -440,9 +440,9 @@ function drawGuideFacingLeft(x, y) {
     ctx.drawImage(
       guide.faceImage, 
       0, 
-      0, 
+      -6, 
       guide.width, 
-      guide.height/3
+      guide.height/2
     );
     ctx.restore();
   } else {
@@ -547,9 +547,9 @@ function drawGuideFacingRight(x, y) {
     ctx.drawImage(
       guide.faceImage, 
       x, 
-      y, 
+      y - 6, 
       guide.width, 
-      guide.height/3
+      guide.height/2
     );
   } else {
     // Fallback drawn face

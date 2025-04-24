@@ -1,21 +1,23 @@
-// Player character functionality for side-scrolling view
-// Now supports custom face image
+// Player character functionality for 8-bit cyberpunk theme
+// Designed to match the existing night city aesthetic
 
 // Player state
 const player = {
-  x: 150, // Starting position
-  y: 450, // Fixed y-position for side-scrolling
-  width: 40,
-  height: 60,
-  speed: 4,
-  moving: false,
-  direction: 'right', // Default direction is right in side-scrolling
-  frame: 0,
-  jumping: false,
-  verticalSpeed: 0,
-  onGround: true,
-  faceImage: null, // Will hold the face image
-  faceLoaded: false // Flag to check if face image is loaded
+  x: 150,                // Starting position
+  y: 450,                // Fixed y-position for side-scrolling
+  width: 40,             // Character width
+  height: 60,            // Character height
+  speed: 4,              // Movement speed
+  moving: false,         // Movement state
+  direction: 'right',    // Facing direction
+  frame: 0,              // Animation frame
+  jumping: false,        // Jump state
+  verticalSpeed: 0,      // Vertical movement speed
+  onGround: true,        // On ground state
+  neonColor: '#00FFFF',  // Default neon accent color
+  neonFlash: 0,          // Neon flash animation counter
+  faceImage: null,       // Will hold the face image
+  faceLoaded: false      // Flag to check if face image is loaded
 };
 
 // Physics constants
@@ -39,7 +41,7 @@ function loadPlayerFace(imagePath) {
 // Initialize player face - call this from main game.js
 function initializePlayerFace(imagePath) {
   console.log("Initializing player face with:", imagePath);
-  loadPlayerFace(imagePath);
+  loadPlayerFace(imagePath || "face.png");
 }
 
 // Update player position and state
@@ -49,6 +51,7 @@ function updatePlayer() {
     movePlayer();
     applyPhysics();
     checkLocationInteractions();
+    updateNeonEffects();
   }
   
   drawPlayer();
@@ -69,7 +72,6 @@ function movePlayer() {
   }
   
   // Jump when up arrow key is pressed and player is on ground
-  // Removed space bar as jump control so it can be used for interactions
   if ((keys.ArrowUp || keys.w) && player.onGround) {
     player.verticalSpeed = -jumpStrength;
     player.jumping = true;
@@ -81,7 +83,7 @@ function movePlayer() {
     player.moving = false;
   }
   
-  // Animation frame update
+  // Animation frame update - slower for more pixelated look
   if (player.moving) {
     player.frame = (player.frame + 0.1) % 4;
   }
@@ -100,6 +102,20 @@ function applyPhysics() {
     player.onGround = true;
     player.jumping = false;
   }
+}
+
+// Update neon effects on the character
+function updateNeonEffects() {
+  // Get location-based color if near a location
+  const nearbyLocation = findNearbyLocation();
+  if (nearbyLocation) {
+    player.neonColor = getLocationColor(nearbyLocation.id);
+  } else {
+    player.neonColor = '#00FFFF'; // Default cyan
+  }
+  
+  // Update neon flash counter for animation
+  player.neonFlash = (player.neonFlash + 0.05) % 1;
 }
 
 // Check if player can interact with any locations
@@ -168,28 +184,44 @@ function drawPlayer() {
 
 // Draw player facing left
 function drawPlayerFacingLeft(x, y) {
+  const pixelSize = 2; // Size of pixels for 8-bit look
+  const width = player.width;
+  const height = player.height;
+  const moving = player.moving;
+  const frame = player.frame;
+  
+  // Calculate leg positions based on animation frame
+  let leftLegOffset = 0;
+  let rightLegOffset = 0;
+  
+  if (moving) {
+    // Sine wave movement for smooth step animation
+    leftLegOffset = Math.sin(frame * Math.PI) * 6;
+    rightLegOffset = -Math.sin(frame * Math.PI) * 6;
+  }
+  
   // Neck
   ctx.fillStyle = '#F5D0A9'; // Light skin tone
-  ctx.fillRect(x + player.width/2 - 3, y + player.height/3, 6, 5);
+  ctx.fillRect(x + width/2 - 3, y + height/3, 6, 5);
   
   // Head outline
   ctx.fillStyle = '#F5D0A9'; // Light skin tone for head
   ctx.beginPath();
-  ctx.arc(x + player.width/2, y + player.height/6, player.width/2 - 5, 0, Math.PI * 2);
+  ctx.arc(x + width/2, y + height/6, width/2 - 5, 0, Math.PI * 2);
   ctx.fill();
   
   // Face - either custom image or drawn
   if (player.faceLoaded && player.faceImage) {
     // Draw the face image but flip it horizontally for left direction
     ctx.save();
-    ctx.translate(x + player.width, y);
+    ctx.translate(x + width, y);
     ctx.scale(-1, 1);
     ctx.drawImage(
       player.faceImage, 
       0, 
-      0, 
-      player.width, 
-      player.height/3
+      -6,  // Move face up by 15 pixels
+      width, 
+      height/2   // Increased height for face image
     );
     ctx.restore();
   } else {
@@ -197,211 +229,297 @@ function drawPlayerFacingLeft(x, y) {
     // Eyes
     ctx.fillStyle = '#212121';
     ctx.beginPath();
-    ctx.arc(x + player.width/2 - 8, y + player.height/6, 3, 0, Math.PI * 2);
+    ctx.arc(x + width/2 - 8, y + height/6, 3, 0, Math.PI * 2);
     ctx.fill();
     ctx.beginPath();
-    ctx.arc(x + player.width/2 + 8, y + player.height/6, 3, 0, Math.PI * 2);
+    ctx.arc(x + width/2 + 8, y + height/6, 3, 0, Math.PI * 2);
     ctx.fill();
     
     // Mouth
-    const mouthY = player.jumping ? y + player.height/6 + 10 : (player.moving ? y + player.height/6 + 5 + Math.sin(Date.now() / 200) * 3 : y + player.height/6 + 5);
+    const mouthY = player.jumping ? y + height/6 + 10 : (moving ? y + height/6 + 5 + Math.sin(Date.now() / 200) * 3 : y + height/6 + 5);
     ctx.beginPath();
-    ctx.arc(x + player.width/2, mouthY, 5, 0, Math.PI, false);
+    ctx.arc(x + width/2, mouthY, 5, 0, Math.PI, false);
     ctx.stroke();
   }
   
-  // Body - shirt
-  ctx.fillStyle = '#87CEEB'; // Light blue shirt
+  // Hair accents - cyberpunk style but moved to not block face
+  ctx.fillStyle = player.neonColor;
+  // Hair highlight/streak moved to the side
+  ctx.fillRect(x + width/2 - 16, y + height/6 - 15, pixelSize * 3, pixelSize * 8);
+  
+  // Body - cyberpunk jacket (feminine fit)
+  ctx.fillStyle = '#222222';
   ctx.beginPath();
-  ctx.moveTo(x + player.width/2 - 12, y + player.height/3);
-  ctx.lineTo(x + player.width/2 + 12, y + player.height/3);
-  ctx.lineTo(x + player.width/2 + 15, y + player.height/3 + player.height/3);
-  ctx.lineTo(x + player.width/2 - 15, y + player.height/3 + player.height/3);
+  ctx.moveTo(x + width/2 - 12, y + height/3 + 5);  // Move torso down by 5 pixels
+  ctx.lineTo(x + width/2 + 12, y + height/3 + 5);  // Move torso down by 5 pixels
+  ctx.lineTo(x + width/2 + 15, y + height/3 + height/3);
+  ctx.lineTo(x + width/2 - 15, y + height/3 + height/3);
   ctx.closePath();
   ctx.fill();
   
-  // Jacket/hoodie
-  ctx.fillStyle = '#E0E0E0'; // Light gray hoodie
-  ctx.beginPath();
-  ctx.moveTo(x + player.width/2 - 15, y + player.height/3);
-  ctx.lineTo(x + player.width/2 - 12, y + player.height/3);
-  ctx.lineTo(x + player.width/2 - 15, y + player.height/3 + player.height/3);
-  ctx.lineTo(x + player.width/2 - 18, y + player.height/3 + player.height/3);
-  ctx.closePath();
-  ctx.fill();
+  // Jacket details - lighter accent
+  ctx.fillStyle = '#444444';
+  ctx.fillRect(x + width/2 - 15, y + height/3 + 5, pixelSize * 1, pixelSize * 15);  // Moved down by 5 pixels
+  ctx.fillRect(x + width/2 + 14, y + height/3 + 5, pixelSize * 1, pixelSize * 15);  // Moved down by 5 pixels
   
-  ctx.beginPath();
-  ctx.moveTo(x + player.width/2 + 12, y + player.height/3);
-  ctx.lineTo(x + player.width/2 + 15, y + player.height/3);
-  ctx.lineTo(x + player.width/2 + 18, y + player.height/3 + player.height/3);
-  ctx.lineTo(x + player.width/2 + 15, y + player.height/3 + player.height/3);
-  ctx.closePath();
-  ctx.fill();
+  // Neon trim on jacket
+  ctx.fillStyle = player.neonColor;
+  ctx.fillRect(x + width/2 - 17, y + height/3 + 10, pixelSize * 2, height/3 - 10);  // Moved down by 5 pixels
+  
+  // Legs with walking animation
+  ctx.fillStyle = '#5C6BC0'; // Darker indigo
+  
+  // Left leg
+  const leftLegX = x + width/2 - 12 - leftLegOffset;
+  ctx.fillRect(leftLegX, y + height - 15, 8, 15);
+  
+  // Right leg
+  const rightLegX = x + width/2 + 4 + rightLegOffset;
+  ctx.fillRect(rightLegX, y + height - 15, 8, 15);
   
   // Pants
   ctx.fillStyle = '#7986CB'; // Light indigo pants
   ctx.beginPath();
-  ctx.moveTo(x + player.width/2 - 15, y + player.height/3 + player.height/3);
-  ctx.lineTo(x + player.width/2 + 15, y + player.height/3 + player.height/3);
-  ctx.lineTo(x + player.width/2 + 15, y + player.height - 15);
-  ctx.lineTo(x + player.width/2 - 15, y + player.height - 15);
+  ctx.moveTo(x + width/2 - 15, y + height/3 + height/3);
+  ctx.lineTo(x + width/2 + 15, y + height/3 + height/3);
+  ctx.lineTo(x + width/2 + 15, y + height - 15);
+  ctx.lineTo(x + width/2 - 15, y + height - 15);
   ctx.closePath();
   ctx.fill();
   
-  // Neon trim on jacket - different colors based on interaction with locations
-  const nearbyLocation = findNearbyLocation();
-  ctx.fillStyle = nearbyLocation ? getLocationColor(nearbyLocation.id) : '#00FFFF';
-  ctx.fillRect(x + player.width/2 - 18, y + player.height/3 + 5, 2, player.height/3 - 10);
-  
-  // Legs with walking animation
-  // Left leg
-  const leftLegX = player.moving ? x + player.width/2 - 12 - Math.sin(player.frame * Math.PI) * 5 : x + player.width/2 - 12;
-  ctx.fillStyle = '#5C6BC0'; // Darker indigo
-  ctx.fillRect(leftLegX, y + player.height - 15, 8, 15);
-  
-  // Right leg
-  const rightLegX = player.moving ? x + player.width/2 + 4 + Math.sin(player.frame * Math.PI) * 5 : x + player.width/2 + 4;
-  ctx.fillStyle = '#5C6BC0'; // Darker indigo
-  ctx.fillRect(rightLegX, y + player.height - 15, 8, 15);
-  
   // Arms
-  ctx.fillStyle = '#E0E0E0'; // Light gray hoodie
+  ctx.fillStyle = '#222222';
   
-  // Left arm
-  const leftArmX = player.moving ? x + player.width/2 - 20 + Math.sin(player.frame * Math.PI) * 5 : x + player.width/2 - 20;
-  ctx.fillRect(leftArmX, y + player.height/3 + 5, 5, player.height/3);
+  // Left arm with animation
+  const leftArmX = x + width/2 - 20 + leftLegOffset;
+  ctx.fillRect(leftArmX, y + height/3 + 5, 5, height/3);
+  
+  // Tech accessory on wrist (cyberpunk bracelet)
+  ctx.fillStyle = player.neonColor;
+  ctx.fillRect(leftArmX, y + height/3 + 5 + height/3 - 8, 5, 5);
   
   // Jump effect
   if (player.jumping) {
-    drawJumpEffect(x, y);
+    drawJumpEffect(x, y + height, pixelSize);
   }
 }
 
 // Draw player facing right
 function drawPlayerFacingRight(x, y) {
+  const pixelSize = 2; // Size of pixels for 8-bit look
+  const width = player.width;
+  const height = player.height;
+  const moving = player.moving;
+  const frame = player.frame;
+  
+  // Calculate leg positions based on animation frame
+  let leftLegOffset = 0;
+  let rightLegOffset = 0;
+  
+  if (moving) {
+    // Sine wave movement for smooth step animation
+    leftLegOffset = Math.sin(frame * Math.PI) * 6;
+    rightLegOffset = -Math.sin(frame * Math.PI) * 6;
+  }
+  
   // Neck
   ctx.fillStyle = '#F5D0A9'; // Light skin tone
-  ctx.fillRect(x + player.width/2 - 3, y + player.height/3, 6, 5);
+  ctx.fillRect(x + width/2 - 3, y + height/3, 6, 5);
   
   // Head outline
   ctx.fillStyle = '#F5D0A9'; // Light skin tone for head
   ctx.beginPath();
-  ctx.arc(x + player.width/2, y + player.height/6, player.width/2 - 5, 0, Math.PI * 2);
+  ctx.arc(x + width/2, y + height/6, width/2 - 5, 0, Math.PI * 2);
   ctx.fill();
   
-  // Face - either custom image or drawn
+  // Face - use custom image (face.png)
   if (player.faceLoaded && player.faceImage) {
     // Draw the face image
     ctx.drawImage(
       player.faceImage, 
       x, 
-      y, 
-      player.width, 
-      player.height/3
+      y - 6,  // Move face up by 15 pixels
+      width, 
+      height/2   // Increased height for face image
     );
   } else {
     // Fallback drawn face
     // Eyes
     ctx.fillStyle = '#212121';
     ctx.beginPath();
-    ctx.arc(x + player.width/2 - 8, y + player.height/6, 3, 0, Math.PI * 2);
+    ctx.arc(x + width/2 - 8, y + height/6, 3, 0, Math.PI * 2);
     ctx.fill();
     ctx.beginPath();
-    ctx.arc(x + player.width/2 + 8, y + player.height/6, 3, 0, Math.PI * 2);
+    ctx.arc(x + width/2 + 8, y + height/6, 3, 0, Math.PI * 2);
     ctx.fill();
     
     // Mouth
-    const mouthY = player.jumping ? y + player.height/6 + 10 : (player.moving ? y + player.height/6 + 5 + Math.sin(Date.now() / 200) * 3 : y + player.height/6 + 5);
+    const mouthY = player.jumping ? y + height/6 + 10 : (moving ? y + height/6 + 5 + Math.sin(Date.now() / 200) * 3 : y + height/6 + 5);
     ctx.beginPath();
-    ctx.arc(x + player.width/2, mouthY, 5, 0, Math.PI, false);
+    ctx.arc(x + width/2, mouthY, 5, 0, Math.PI, false);
     ctx.stroke();
   }
   
-  // Body - shirt
-  ctx.fillStyle = '#87CEEB'; // Light blue shirt
+  // Hair accents - cyberpunk style but moved to not block face
+  ctx.fillStyle = player.neonColor;
+  // Hair highlight/streak moved to the side
+  ctx.fillRect(x + width/2 + 14, y + height/6 - 15, pixelSize * 3, pixelSize * 8);
+  
+  // Body - cyberpunk jacket (feminine fit)
+  ctx.fillStyle = '#222222';
   ctx.beginPath();
-  ctx.moveTo(x + player.width/2 - 12, y + player.height/3);
-  ctx.lineTo(x + player.width/2 + 12, y + player.height/3);
-  ctx.lineTo(x + player.width/2 + 15, y + player.height/3 + player.height/3);
-  ctx.lineTo(x + player.width/2 - 15, y + player.height/3 + player.height/3);
+  ctx.moveTo(x + width/2 - 12, y + height/3);
+  ctx.lineTo(x + width/2 + 12, y + height/3);
+  ctx.lineTo(x + width/2 + 15, y + height/3 + height/3);
+  ctx.lineTo(x + width/2 - 15, y + height/3 + height/3);
   ctx.closePath();
   ctx.fill();
   
-  // Jacket/hoodie
-  ctx.fillStyle = '#E0E0E0'; // Light gray hoodie
-  ctx.beginPath();
-  ctx.moveTo(x + player.width/2 - 15, y + player.height/3);
-  ctx.lineTo(x + player.width/2 - 12, y + player.height/3);
-  ctx.lineTo(x + player.width/2 - 15, y + player.height/3 + player.height/3);
-  ctx.lineTo(x + player.width/2 - 18, y + player.height/3 + player.height/3);
-  ctx.closePath();
-  ctx.fill();
+  // Jacket details - lighter accent
+  ctx.fillStyle = '#444444';
+  ctx.fillRect(x + width/2 - 15, y + height/3, pixelSize * 1, pixelSize * 15);
+  ctx.fillRect(x + width/2 + 14, y + height/3, pixelSize * 1, pixelSize * 15);
   
-  ctx.beginPath();
-  ctx.moveTo(x + player.width/2 + 12, y + player.height/3);
-  ctx.lineTo(x + player.width/2 + 15, y + player.height/3);
-  ctx.lineTo(x + player.width/2 + 18, y + player.height/3 + player.height/3);
-  ctx.lineTo(x + player.width/2 + 15, y + player.height/3 + player.height/3);
-  ctx.closePath();
-  ctx.fill();
+  // Neon trim on jacket
+  ctx.fillStyle = player.neonColor;
+  ctx.fillRect(x + width/2 + 15, y + height/3 + 10, pixelSize * 2, height/3 - 10);  // Moved down by 5 pixels
+  
+  // Legs with walking animation
+  ctx.fillStyle = '#5C6BC0'; // Darker indigo
+  
+  // Left leg
+  const leftLegX = x + width/2 - 12 - leftLegOffset;
+  ctx.fillRect(leftLegX, y + height - 15, 8, 15);
+  
+  // Right leg
+  const rightLegX = x + width/2 + 4 + rightLegOffset;
+  ctx.fillRect(rightLegX, y + height - 15, 8, 15);
   
   // Pants
   ctx.fillStyle = '#7986CB'; // Light indigo pants
   ctx.beginPath();
-  ctx.moveTo(x + player.width/2 - 15, y + player.height/3 + player.height/3);
-  ctx.lineTo(x + player.width/2 + 15, y + player.height/3 + player.height/3);
-  ctx.lineTo(x + player.width/2 + 15, y + player.height - 15);
-  ctx.lineTo(x + player.width/2 - 15, y + player.height - 15);
+  ctx.moveTo(x + width/2 - 15, y + height/3 + height/3);
+  ctx.lineTo(x + width/2 + 15, y + height/3 + height/3);
+  ctx.lineTo(x + width/2 + 15, y + height - 15);
+  ctx.lineTo(x + width/2 - 15, y + height - 15);
   ctx.closePath();
   ctx.fill();
   
-  // Neon trim on jacket - different colors based on interaction with locations
-  const nearbyLocation = findNearbyLocation();
-  ctx.fillStyle = nearbyLocation ? getLocationColor(nearbyLocation.id) : '#00FFFF';
-  ctx.fillRect(x + player.width/2 + 16, y + player.height/3 + 5, 2, player.height/3 - 10);
-  
-  // Legs with walking animation
-  // Left leg
-  const leftLegX = player.moving ? x + player.width/2 - 12 - Math.sin(player.frame * Math.PI) * 5 : x + player.width/2 - 12;
-  ctx.fillStyle = '#5C6BC0'; // Darker indigo
-  ctx.fillRect(leftLegX, y + player.height - 15, 8, 15);
-  
-  // Right leg
-  const rightLegX = player.moving ? x + player.width/2 + 4 + Math.sin(player.frame * Math.PI) * 5 : x + player.width/2 + 4;
-  ctx.fillStyle = '#5C6BC0'; // Darker indigo
-  ctx.fillRect(rightLegX, y + player.height - 15, 8, 15);
-  
   // Arms
-  ctx.fillStyle = '#E0E0E0'; // Light gray hoodie
+  ctx.fillStyle = '#222222';
   
-  // Right arm
-  const rightArmX = player.moving ? x + player.width/2 + 15 + Math.sin(player.frame * Math.PI) * 5 : x + player.width/2 + 15;
-  ctx.fillRect(rightArmX, y + player.height/3 + 5, 5, player.height/3);
+  // Right arm with animation
+  const rightArmX = x + width/2 + 15 + rightLegOffset;
+  ctx.fillRect(rightArmX, y + height/3 + 5, 5, height/3);
+  
+  // Tech accessory on wrist (cyberpunk bracelet)
+  ctx.fillStyle = player.neonColor;
+  ctx.fillRect(rightArmX, y + height/3 + 5 + height/3 - 8, 5, 5);
   
   // Jump effect
   if (player.jumping) {
-    drawJumpEffect(x, y);
+    drawJumpEffect(x, y + height, pixelSize);
   }
 }
 
-// Draw jump effect (dust particles, etc)
-function drawJumpEffect(x, y) {
-  // Dust particles
-  ctx.fillStyle = 'rgba(100, 100, 100, 0.5)';
-  for (let i = 0; i < 5; i++) {
-    const particleX = x + Math.random() * player.width;
-    const particleY = y + player.height + Math.random() * 10;
-    const particleSize = 2 + Math.random() * 3;
+// Draw neon effects and glow
+function drawNeonEffects(x, y, pixelSize, rgbNeon, opacity) {
+  const width = player.width;
+  const height = player.height;
+  
+  // Create neon glow effect for various parts
+  ctx.fillStyle = `rgba(${rgbNeon.r}, ${rgbNeon.g}, ${rgbNeon.b}, ${opacity * 0.2})`;
+  
+  // Hair highlight glow moved farther to not block face
+  if (player.direction === 'right') {
+    ctx.fillRect(
+      x + width/2 + 13, 
+      y + height/6 - 16, 
+      pixelSize * 5, 
+      pixelSize * 10
+    );
+  } else {
+    ctx.fillRect(
+      x + width/2 - 18, 
+      y + height/6 - 16, 
+      pixelSize * 5, 
+      pixelSize * 10
+    );
+  }
+  
+  // Wrist accessory glow
+  const armPos = player.direction === 'right' ? 
+    x + width/2 + 14 : 
+    x + width/2 - 20;
+  
+  ctx.fillRect(
+    armPos - pixelSize, 
+    y + height/3 + height/3 - 10, 
+    pixelSize * 7, 
+    pixelSize * 7
+  );
+  
+  // Occasional neon pulse effect
+  const time = Date.now() / 1000;
+  if (Math.sin(time * 2) > 0.7) {
+    // Enhanced glow during pulse
+    ctx.fillStyle = `rgba(${rgbNeon.r}, ${rgbNeon.g}, ${rgbNeon.b}, ${opacity * 0.3})`;
     
-    ctx.beginPath();
-    ctx.arc(particleX, particleY, particleSize, 0, Math.PI * 2);
-    ctx.fill();
+    // Jacket neon trim glow
+    if (player.direction === 'right') {
+      ctx.fillRect(
+        x + width/2 + 14, 
+        y + height/3, 
+        pixelSize * 4, 
+        height/3
+      );
+    } else {
+      ctx.fillRect(
+        x + width/2 - 18, 
+        y + height/3, 
+        pixelSize * 4, 
+        height/3
+      );
+    }
   }
 }
 
-// Find closest location to player for neon color effects
+// Draw jump effect with pixelated dust/energy
+function drawJumpEffect(x, y, pixelSize) {
+  const width = player.width;
+  
+  // Pixel dust particles
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+  
+  // Create random pixel dust
+  for (let i = 0; i < 8; i++) {
+    const particleX = x + Math.floor(Math.random() * width / pixelSize) * pixelSize;
+    const particleY = y + Math.floor(Math.random() * pixelSize * 3 / pixelSize) * pixelSize;
+    const particleSize = Math.floor((1 + Math.random() * 2)) * pixelSize;
+    
+    ctx.fillRect(particleX, particleY, particleSize, particleSize);
+  }
+  
+  // Neon particles from shoes
+  const rgbNeon = hexToRgb(player.neonColor);
+  
+  for (let i = 0; i < 5; i++) {
+    const neonX = x + width/2 - 10 + Math.floor(Math.random() * 20 / pixelSize) * pixelSize;
+    const neonY = y - Math.floor(Math.random() * 5 / pixelSize) * pixelSize;
+    
+    // Create sparkle effect with diminishing opacity
+    ctx.fillStyle = `rgba(${rgbNeon.r}, ${rgbNeon.g}, ${rgbNeon.b}, ${0.8 - i * 0.15})`;
+    ctx.fillRect(neonX, neonY, pixelSize * 2, pixelSize * 2);
+  }
+  
+  // Neon jump line beneath shoes
+  ctx.fillStyle = player.neonColor;
+  ctx.fillRect(x + width/2 - pixelSize * 5, y, pixelSize * 10, pixelSize);
+}
+
+// Find the closest interactive location to the player
 function findNearbyLocation() {
-  let closestDist = 200; // Max detection radius
+  let closestDist = 150; // Max detection radius
   let closestLocation = null;
   
   locations.forEach(location => {
@@ -428,4 +546,20 @@ function getLocationColor(locationType) {
     case 'proposal': return '#FF4081'; // Pink
     default: return '#00FFFF'; // Default cyan
   }
+}
+
+// Helper function to convert hex color to RGB
+function hexToRgb(hex) {
+  // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  hex = hex.replace(shorthandRegex, (m, r, g, b) => {
+    return r + r + g + g + b + b;
+  });
+
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
 }
