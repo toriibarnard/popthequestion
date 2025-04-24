@@ -35,9 +35,22 @@ function initializeGame() {
   // Make sure your face.jpg file is in the same directory as the game files
   try {
     initializePlayerFace('images/face.png');
-    console.log("Initialized player face with face.jpg");
+    console.log("Initialized player face with face.png");
   } catch (e) {
     console.error("Could not initialize player face:", e);
+  }
+  
+  // Initialize guide character with custom face
+  try {
+    initializeGuideCharacter('images/face2.png');
+    console.log("Initialized guide character with face2.png");
+    
+    // Show initial guide message after a short delay
+    setTimeout(() => {
+      showInitialGuideDialog();
+    }, 1500);
+  } catch (e) {
+    console.error("Could not initialize guide character:", e);
   }
   
   // Initialize camera
@@ -79,8 +92,8 @@ function initializeGame() {
   // In a real implementation, you'd set the actual path to your mp3 file
   document.getElementById('songPlayer').src = 'lover_you_shouldve_come_over.mp3';
   
-  // Initial instructions
-  showDialog("Welcome to our special journey through the neon-lit night! Use LEFT and RIGHT arrow keys to move, and UP to jump. Visit each special memory along the path!", 6000);
+  // Initial instructions - changed to reference guide
+  showDialog("Welcome to our special journey through the neon-lit night! Use LEFT and RIGHT arrow keys to move, and UP to jump. Let me guide you to our special memories!", 6000);
   
   console.log("Game initialized, starting game loop");
   
@@ -127,20 +140,20 @@ function setupBackgroundMusic() {
     console.error("Could not set up background music:", e);
   }
   // Set up toggle button for music
-document.getElementById('toggleMusic').addEventListener('click', function() {
-  if (backgroundMusic.paused) {
-    backgroundMusic.play()
-      .then(() => {
-        console.log("Background music resumed");
-      })
-      .catch(error => {
-        console.error("Could not play background music:", error);
-      });
-  } else {
-    backgroundMusic.pause();
-    console.log("Background music paused");
-  }
-});
+  document.getElementById('toggleMusic').addEventListener('click', function() {
+    if (backgroundMusic.paused) {
+      backgroundMusic.play()
+        .then(() => {
+          console.log("Background music resumed");
+        })
+        .catch(error => {
+          console.error("Could not play background music:", error);
+        });
+    } else {
+      backgroundMusic.pause();
+      console.log("Background music paused");
+    }
+  });
 }
 
 // Create hearts animation for the celebration screen

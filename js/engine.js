@@ -146,6 +146,7 @@ function gameLoop() {
   // Update and draw game elements (implemented in other files)
   updateWorld();
   updatePlayer();
+  updateGuide(); // Add the guide update here
   
   // Continue loop
   window.requestAnimationFrame(gameLoop);

@@ -5,7 +5,7 @@
 const locations = [
     {
       id: "instagram",
-      x: 300,
+      x: 800,
       y: 380, // Above the road
       width: 100,
       height: 120,
@@ -15,7 +15,7 @@ const locations = [
     },
     {
       id: "restaurant",
-      x: 800,
+      x: 1600,
       y: 380, // Above the road
       width: 150,
       height: 120,
@@ -25,7 +25,7 @@ const locations = [
     },
     {
       id: "song",
-      x: 1400,
+      x: 2400,
       y: 410, // Above the road, slightly different height due to object type
       width: 100,
       height: 90,
@@ -35,7 +35,7 @@ const locations = [
     },
     {
       id: "camera",
-      x: 1900, // New camera location
+      x: 3200, // New camera location
       y: 390, // Above the road
       width: 120,
       height: 120,
@@ -45,7 +45,7 @@ const locations = [
     },
     {
       id: "dateRanking",
-      x: 2400, // Moved further to make space for camera
+      x: 4000, // Moved further to make space for camera
       y: 370, // Above the road
       width: 130,
       height: 130,
@@ -55,7 +55,7 @@ const locations = [
     },
     {
       id: "ramen",
-      x: 2900, // Moved further to make space
+      x: 4800, // Moved further to make space
       y: 380, // Above the road
       width: 150,
       height: 120,
@@ -65,7 +65,7 @@ const locations = [
     },
     {
       id: "proposal",
-      x: 3400, // Moved further to make space
+      x: 5600, // Moved further to make space
       y: 350, // Above the road
       width: 200,
       height: 150,

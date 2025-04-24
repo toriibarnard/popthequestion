@@ -1,7 +1,7 @@
 // Core world functionality - handles the map dimensions, camera, and main rendering
 
 // Map dimensions (increased to accommodate more spread out locations)
-const mapWidth = 3700; // Increased from 3000 to fit all the new locations
+const mapWidth = 6000; // Increased from 3000 to fit all the new locations
 const mapHeight = 600;
 
 // Camera position (only moves horizontally)
