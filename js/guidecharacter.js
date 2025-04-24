@@ -187,13 +187,13 @@ function showGuideMessage(message, duration = -1) {
 function showLocationSpecificMessage(locationId) {
   // Location-specific messages with more character and detail
   const locationMessages = {
-    "instagram": "This is where we first met online! Remember our first messages? My heart was racing!",
-    "restaurant": "Restauranté Amano! Our first date was here. You looked so beautiful that night.",
+    "instagram": "This is the first time we spoke! Can you remember our messages?",
+    "restaurant": "Restauranté Amano! Our first date. I can still remember how pretty you looked!",
     "song": "Our special song! Every time I hear it, I think of you and smile.",
-    "camera": "This photo is one of my favorites of us! We should take more pictures together.",
-    "dateRanking": "All these amazing dates we've been on... I've loved every moment with you.",
-    "ramen": "Buta Ramen! Remember how we always get the Tantanmen? My mouth is watering just thinking about it!",
-    "proposal": "I've been thinking about this moment for a long time. There's something I want to ask you..."
+    "camera": "My favourite picture of us! We should take more pictures together.",
+    "dateRanking": "All these amazing dates we've been on... Pick your favourite!",
+    "ramen": "Buta Ramen! My mouth is watering just thinking about it!",
+    "proposal": "I've been thinking about this for a long time"
   };
   
   // Show the message for this location - persistent until stage completion

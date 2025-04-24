@@ -171,7 +171,7 @@ function initInstagramInteraction() {
     
     const username = document.createElement('span');
     username.className = 'dm-username';
-    username.textContent = 'Her';
+    username.textContent = 'You';
     username.style.color = '#E1306C';
     
     const time = document.createElement('span');
@@ -211,7 +211,7 @@ function initInstagramInteraction() {
       
       const finalUsername = document.createElement('span');
       finalUsername.className = 'dm-username';
-      finalUsername.textContent = 'You';
+      finalUsername.textContent = 'Tormeister';
       finalUsername.style.color = '#00BFFF';
       
       const finalTime = document.createElement('span');
