@@ -21,10 +21,17 @@ const guide = {
   faceImage: null, // Will hold the face image
   faceLoaded: false, // Flag to check if face image is loaded
   targetX: 0, // Target x position
+  lastTargetX: 0, // Last target position for detecting changes
   waitingForPlayer: false, // Whether guide is waiting for player to catch up
   message: "", // Current guide message
-  messageTimeout: 0, // Timer for current message
-  lastUpdateTime: 0 // Time tracking for frame-independent movement
+  messageTimeout: -1, // Timer for current message (-1 means persistent)
+  lastUpdateTime: 0, // Time tracking for frame-independent movement
+  lastJumpTime: 0, // Time tracking for consistent jumping
+  introStep: 0, // Track intro message step
+  currentLocation: "", // Track current location ID for persistent messages
+  locationMessageShown: false, // Flag to track if location message has been shown
+  waitFrames: 0, // Frames to wait before checking for location again
+  stageComplete: false // Flag to indicate a stage was just completed
 };
 
 // Load guide face image
@@ -46,9 +53,28 @@ function initializeGuideCharacter(imagePath) {
   console.log("Initializing guide character with:", imagePath);
   loadGuideFace(imagePath);
   guide.lastUpdateTime = Date.now();
+  guide.lastJumpTime = Date.now();
+  guide.introStep = 0;
+  guide.locationMessageShown = false;
+  guide.currentLocation = "";
+  guide.stageComplete = false;
+  
+  // Set up click handler for message progression
+  setupClickHandler();
   
   // Set initial target as the first location
   updateGuideTarget();
+}
+
+// Set up click handler for message progression
+function setupClickHandler() {
+  // Add a click event listener to the canvas
+  canvas.addEventListener('click', function() {
+    // Only proceed if we're still in the intro phase
+    if (guide.introStep < 2) {
+      handleIntroProgression();
+    }
+  });
 }
 
 // Update guide position and state
@@ -58,74 +84,121 @@ function updateGuide() {
   const deltaTime = (currentTime - guide.lastUpdateTime) / 1000; // in seconds
   guide.lastUpdateTime = currentTime;
   
-  // Only move guide if no interaction is active
+  // Check if we need to clear timed-out messages
+  if (guide.messageTimeout > 0 && currentTime > guide.messageTimeout) {
+    guide.message = "";
+    guide.messageTimeout = -1;
+  }
+  
+  // Check if a stage was just completed and we need to update targets
+  if (guide.stageComplete) {
+    updateGuideTarget();
+    guide.stageComplete = false;
+    guide.locationMessageShown = false;
+    guide.waitingForPlayer = false;
+    
+    // Show a transition message
+    showGuideMessage("Let's head to the next spot!", 3000);
+  }
+  
+  // Only move guide if no interaction is active and intro is complete
   if (gameState.activeInteraction === null) {
-    moveGuide(deltaTime);
+    if (guide.introStep >= 2) {
+      moveGuide(deltaTime);
+      checkForLocationMessages();
+    }
     applyGuidePhysics(deltaTime);
-    checkForDialogTriggers();
   }
   
   drawGuide();
 }
 
-// Check if it's time to show a dialog message
-function checkForDialogTriggers() {
-  const currentTime = Date.now();
+// Handle intro message progression when player clicks
+function handleIntroProgression() {
+  // Progress to next intro step
+  guide.introStep++;
   
-  // Clear expired messages
-  if (guide.messageTimeout > 0 && currentTime > guide.messageTimeout) {
+  if (guide.introStep === 1) {
+    // First click shows the second intro message
+    showGuideMessage("Follow me and play some fun mini games that are based on our memories!", 5000);
+  } else if (guide.introStep === 2) {
+    // Second click clears the message and starts the guide movement
     guide.message = "";
-    guide.messageTimeout = 0;
+    guide.messageTimeout = -1;
+    
+    // Guide will start moving now and location messages will be handled by checkForLocationMessages
+  }
+}
+
+// Check for location-specific messages based on position
+function checkForLocationMessages() {
+  // If waiting some frames before checking again, decrement counter
+  if (guide.waitFrames > 0) {
+    guide.waitFrames--;
+    return;
   }
   
-  // If no active message, check for triggers
+  // Get current stage location
+  const currentStageId = gameState.stages[gameState.currentStage];
+  const currentLocation = locations.find(loc => loc.id === currentStageId);
+  
+  // If we have a location and it's different than before, reset message flag
+  if (currentLocation && currentStageId !== guide.currentLocation) {
+    guide.locationMessageShown = false;
+    guide.currentLocation = currentStageId;
+  }
+  
+  // If at location and waiting for player, show message
+  if (currentLocation && !guide.locationMessageShown && guide.waitingForPlayer) {
+    const distanceToTarget = Math.abs(guide.x - currentLocation.x);
+    
+    // When guide is near the location
+    if (distanceToTarget < 100) {
+      // Force the location-specific message to appear
+      showLocationSpecificMessage(currentStageId);
+      guide.locationMessageShown = true;
+      
+      // Wait a few frames before checking again
+      guide.waitFrames = 60;
+    }
+  }
+  
+  // Additional check for "follow me" prompts when player is far behind
   if (guide.message === "") {
-    // Distance to player
     const distanceToPlayer = Math.abs(guide.x - player.x);
     
     // If player is falling too far behind
-    if (distanceToPlayer > 200 && guide.waitingForPlayer) {
+    if (distanceToPlayer > 300 && guide.waitingForPlayer) {
       showGuideMessage("Come on! Follow me this way! →", 3000);
-    }
-    
-    // Distance to current stage location
-    const currentStageId = gameState.stages[gameState.currentStage];
-    const currentLocation = locations.find(loc => loc.id === currentStageId);
-    
-    if (currentLocation) {
-      const distanceToTarget = Math.abs(guide.x - currentLocation.x);
       
-      // When guide arrives at location
-      if (distanceToTarget < 30 && guide.waitingForPlayer && !guide.message) {
-        showGuideMessage("This is a special place! Come check it out!", 4000);
-      }
-    }
-    
-    // Guide random commentary based on current stage
-    if (Math.random() < 0.002 && !guide.message && !guide.waitingForPlayer) { // Reduced chance
-      const messages = {
-        instagram: ["Remember our Instagram posts?", "This spot reminds me of our Instagram memories!"],
-        restaurant: ["Remember our first date at that restaurant?", "The restaurant was so special!"],
-        song: ["This song always reminds me of us!", "Our special song is up ahead!"],
-        camera: ["We took some great pictures together!", "I love this photo of us!"],
-        dateRanking: ["We've had so many amazing dates!", "Can you rank our best dates?"],
-        ramen: ["Remember our favorite ramen place?", "Tantanmen ramen was always your favorite!"],
-        proposal: ["I have something special to ask you...", "There's a special spot up ahead!"]
-      };
-      
-      const currentStageId = gameState.stages[gameState.currentStage];
-      const stageMessages = messages[currentStageId] || ["This way!", "Follow me!"];
-      const randomMessage = stageMessages[Math.floor(Math.random() * stageMessages.length)];
-      
-      showGuideMessage(randomMessage, 3000);
+      // Wait a few frames before checking again
+      guide.waitFrames = 90;
     }
   }
 }
 
 // Show a guide message
-function showGuideMessage(message, duration = 3000) {
+function showGuideMessage(message, duration = -1) {
   guide.message = message;
-  guide.messageTimeout = Date.now() + duration;
+  guide.messageTimeout = duration > 0 ? Date.now() + duration : -1;
+}
+
+// Show location-specific message when arriving at a destination
+function showLocationSpecificMessage(locationId) {
+  // Location-specific messages with more character and detail
+  const locationMessages = {
+    "instagram": "This is where we first met online! Remember our first messages? My heart was racing!",
+    "restaurant": "Restauranté Amano! Our first date was here. You looked so beautiful that night.",
+    "song": "Our special song! Every time I hear it, I think of you and smile.",
+    "camera": "This photo is one of my favorites of us! We should take more pictures together.",
+    "dateRanking": "All these amazing dates we've been on... I've loved every moment with you.",
+    "ramen": "Buta Ramen! Remember how we always get the Tantanmen? My mouth is watering just thinking about it!",
+    "proposal": "I've been thinking about this moment for a long time. There's something I want to ask you..."
+  };
+  
+  // Show the message for this location - persistent until stage completion
+  const message = locationMessages[locationId] || "This is a special place for us!";
+  showGuideMessage(message, -1); // -1 means persistent
 }
 
 // Update guide target based on game state
@@ -134,8 +207,16 @@ function updateGuideTarget() {
   const currentStageId = gameState.stages[gameState.currentStage];
   const currentLocation = locations.find(loc => loc.id === currentStageId);
   
+  // Always immediately update target to current stage location
   if (currentLocation) {
-    guide.targetX = currentLocation.x - 50; // Position slightly before the location
+    const newTargetX = currentLocation.x - 50; // Position slightly before the location
+    
+    // Only update if target has actually changed
+    if (Math.abs(newTargetX - guide.targetX) > 10) {
+      guide.targetX = newTargetX;
+      guide.lastTargetX = guide.targetX;
+      guide.locationMessageShown = false; // Reset message flag for new location
+    }
   } else {
     // Default to ahead of player if no location found
     guide.targetX = player.x + 150;
@@ -144,16 +225,12 @@ function updateGuideTarget() {
 
 // Handle guide movement
 function moveGuide(deltaTime) {
-  // Update target periodically (less frequently)
-  if (Math.random() < 0.005) { // Reduced chance
-    updateGuideTarget();
-  }
-  
+  // Guide movement behavior changes based on whether we've shown the location message
   const distanceToTarget = guide.targetX - guide.x;
   const distanceToPlayer = player.x - guide.x;
   
   // Guide behavior states
-  if (Math.abs(distanceToTarget) < 30) {
+  if (Math.abs(distanceToTarget) < 40) {
     // At target location, wait for player
     guide.waitingForPlayer = true;
     guide.moving = false;
@@ -165,11 +242,13 @@ function moveGuide(deltaTime) {
       guide.direction = 'right';
     }
     
-    // Jump occasionally while waiting to draw attention (much less frequently)
-    if (guide.onGround && Math.random() < 0.02) {
-      guide.verticalSpeed = -guideJumpStrength * 0.8; // Smaller jump than player
+    // Jump regularly while waiting (approximately every 3 seconds)
+    const currentTime = Date.now();
+    if (guide.onGround && (currentTime - guide.lastJumpTime > 3000)) {
+      guide.verticalSpeed = -guideJumpStrength * 0.8;
       guide.jumping = true;
       guide.onGround = false;
+      guide.lastJumpTime = currentTime;
     }
   } 
   else if (Math.abs(distanceToPlayer) > 300) {
@@ -202,11 +281,13 @@ function moveGuide(deltaTime) {
     guide.frame = (guide.frame + 0.1) % 4;
   }
   
-  // Random jumps while moving (much less frequently)
-  if (guide.moving && guide.onGround && Math.random() < 0.0005) {
+  // Random jumps while moving (occasionally)
+  const currentTime = Date.now();
+  if (guide.moving && guide.onGround && (currentTime - guide.lastJumpTime > 8000) && Math.random() < 0.02) {
     guide.verticalSpeed = -guideJumpStrength * 0.8;
     guide.jumping = true;
     guide.onGround = false;
+    guide.lastJumpTime = currentTime;
   }
 }
 
@@ -268,9 +349,39 @@ function drawGuideSpeechBubble(x, y, message) {
   const bubbleArrowHeight = 10;
   
   ctx.font = '12px Arial';
-  const textWidth = ctx.measureText(message).width;
-  const bubbleWidth = textWidth + (bubblePadding * 2);
-  const bubbleHeight = 25;
+  
+  // Split message into multiple lines if it's too long
+  const maxWidth = 200; // Maximum width of the bubble
+  let words = message.split(' ');
+  let lines = [];
+  let currentLine = words[0];
+  
+  for (let i = 1; i < words.length; i++) {
+    let testLine = currentLine + ' ' + words[i];
+    let metrics = ctx.measureText(testLine);
+    let testWidth = metrics.width;
+    
+    if (testWidth > maxWidth) {
+      lines.push(currentLine);
+      currentLine = words[i];
+    } else {
+      currentLine = testLine;
+    }
+  }
+  lines.push(currentLine);
+  
+  // Calculate bubble dimensions based on text
+  const lineHeight = 15;
+  const bubbleHeight = lines.length * lineHeight + bubblePadding * 2;
+  let maxLineWidth = 0;
+  
+  for (let i = 0; i < lines.length; i++) {
+    let metrics = ctx.measureText(lines[i]);
+    let lineWidth = metrics.width;
+    maxLineWidth = Math.max(maxLineWidth, lineWidth);
+  }
+  
+  const bubbleWidth = maxLineWidth + bubblePadding * 2;
   
   // Position bubble above character
   const bubbleX = x - (bubbleWidth / 2) + (guide.width / 2);
@@ -301,8 +412,11 @@ function drawGuideSpeechBubble(x, y, message) {
   
   // Draw text
   ctx.fillStyle = '#FFFFFF';
-  ctx.textAlign = 'center';
-  ctx.fillText(message, bubbleX + (bubbleWidth / 2), bubbleY + 16);
+  ctx.textAlign = 'left';
+  
+  for (let i = 0; i < lines.length; i++) {
+    ctx.fillText(lines[i], bubbleX + bubblePadding, bubbleY + bubblePadding + (i + 1) * lineHeight);
+  }
 }
 
 // Draw guide facing left
@@ -523,5 +637,22 @@ function drawGuideFacingRight(x, y) {
 
 // Show initial guide dialog
 function showInitialGuideDialog() {
-  showGuideMessage("Hi! Follow me on our special journey!", 5000);
+  showGuideMessage("Hi Sienna! Happy for you to be here today.", 5000);
 }
+
+// Function to be called when a stage is completed
+function guideStageCompleted(stage) {
+  // Clear current message
+  guide.message = "";
+  guide.messageTimeout = -1;
+  
+  // Set the stage complete flag to trigger movement in the next update
+  guide.stageComplete = true;
+  guide.currentLocation = "";
+  guide.locationMessageShown = false;
+  guide.waitingForPlayer = false;
+}
+
+// IMPORTANT: Add this to your engine.js completeStage function
+// After the line: gameState.stagesCompleted[stage] = true;
+// Add: if (typeof guideStageCompleted === 'function') { guideStageCompleted(stage); }

@@ -89,6 +89,9 @@ function hideInteraction(interactionId) {
 
 function completeStage(stage) {
   gameState.stagesCompleted[stage] = true;
+  if (typeof guideStageCompleted === 'function') { 
+    guideStageCompleted(stage); 
+  }
   
   // Only advance to next stage if not on the proposal stage
   if (stage !== "proposal") {
