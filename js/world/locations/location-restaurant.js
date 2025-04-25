@@ -195,7 +195,7 @@ function drawRestaurantSign(x, y, width, pixelSize, isCompleted) {
   }
   
   // Restaurant name text
-  drawPixelText("RESTAURANTÉ AMANO", signX + signWidth/2, signY + signHeight/2, 
+  drawPixelText("RESTAURANT AMANO", signX + signWidth/2, signY + signHeight/2, 
                isCompleted ? '#E0E0E0' : '#3E2723', pixelSize);
 }
 
