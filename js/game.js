@@ -52,6 +52,12 @@ function initializeGame() {
   } catch (e) {
     console.error("Could not initialize guide character:", e);
   }
+  try {
+    initializeCatFace('images/cat.png');
+    console.log("Initialized cat face with cat.png")
+  } catch (e) {
+    console.error("Could not initialize cat face:", e)
+  }
   
   // Initialize camera
   camera.x = 0;

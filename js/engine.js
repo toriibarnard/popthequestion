@@ -150,6 +150,7 @@ function gameLoop() {
   updateWorld();
   updatePlayer();
   updateGuide(); // Add the guide update here
+  updateCat();
   
   // Continue loop
   window.requestAnimationFrame(gameLoop);
