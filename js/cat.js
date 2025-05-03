@@ -123,15 +123,15 @@ const catChar = {
         "PUMPKIN", 
       ];
       
-      // 60% chance to actually meow when timer is up
-      if (Math.random() > 0.4) {
+      // 80% chance to actually meow when timer is up
+      if (Math.random() > 0.2) {
         // Set a new meow
         catChar.meowText = meows[Math.floor(Math.random() * meows.length)];
         catChar.meowDuration = 2000 + Math.random() * 1000; // 2-3 seconds
       }
       
-      // Reset timer (10-20 seconds)
-      catChar.meowTimer = currentTime + 1000 + Math.random() * 1000;
+      // Reset timer (1-2 seconds)
+      catChar.meowTimer = currentTime + 200 + Math.random() * 500;
     }
   }
   
