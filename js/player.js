@@ -183,7 +183,7 @@ function drawPlayer() {
 }
 
 // Draw player facing left
-function drawPlayerFacingLeft(x, y) {
+function drawPlayerFacingRight(x, y) {
   const pixelSize = 2; // Size of pixels for 8-bit look
   const width = player.width;
   const height = player.height;
@@ -305,7 +305,7 @@ function drawPlayerFacingLeft(x, y) {
 }
 
 // Draw player facing right
-function drawPlayerFacingRight(x, y) {
+function drawPlayerFacingLeft(x, y) {
   const pixelSize = 2; // Size of pixels for 8-bit look
   const width = player.width;
   const height = player.height;

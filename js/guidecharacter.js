@@ -120,7 +120,7 @@ function handleIntroProgression() {
   
   if (guide.introStep === 1) {
     // First click shows the second intro message
-    showGuideMessage("Follow me and play some fun mini games that are based on our memories!", 8000);
+    showGuideMessage("Follow me and play some fun mini games that are based on our memories!", 80000);
   } else if (guide.introStep === 2) {
     // Second click clears the message and starts the guide movement
     guide.message = "";
@@ -637,7 +637,7 @@ function drawGuideFacingRight(x, y) {
 
 // Show initial guide dialog
 function showInitialGuideDialog() {
-  showGuideMessage("Hi Sienna! Happy for you to be here today.", 15000);
+  showGuideMessage("Hi Sienna! Happy for you to be here today.", 80000);
 }
 
 // Function to be called when a stage is completed
