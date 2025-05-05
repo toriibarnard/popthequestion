@@ -16,8 +16,8 @@ function initRamenInteraction() {
     { name: "Noodles", id: "noodles", description: "Fresh ramen noodles" },
     { name: "Tantanmen Sauce", id: "sauce", description: "Spicy sauce" },
     { name: "Ground Pork", id: "pork", description: "Seasoned minced pork" },
-    { name: "Menma (Bamboo Shoots)", id: "menma", description: "Fermented bamboo shoots" },
-    { name: "Ajitama (Soft Boiled Egg)", id: "egg", description: "Marinated soft-boiled egg" },
+    { name: "Menma", id: "menma", description: "Bamboo shoots" },
+    { name: "Egg", id: "egg", description: "Soft-boiled egg" },
     { name: "Bean Sprouts", id: "sprouts", description: "Crunchy bean sprouts" },
     { name: "Corn", id: "corn", description: "Sweet yellow corn" }
   ];
@@ -392,7 +392,7 @@ function initRamenInteraction() {
         `;
         
         if (incorrectSelected.length > 0) {
-          responseHTML += `<p>We usually skip: ${incorrectSelected.map(id => 
+          responseHTML += `<p>We usually dont get: ${incorrectSelected.map(id => 
             toppings.find(t => t.id === id).name
           ).join(', ')}.</p>`;
         }

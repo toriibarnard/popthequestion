@@ -11,7 +11,7 @@ function initRestaurantInteraction() {
   // Date memory items with correct order
   const correctOrder = [
     "You got shy and curled up in a ball",
-    "we ordered our pitiful portions of pasta",
+    "We ordered our pitiful portions of pasta",
     "'It was my pleasure'",
     "The 'Trust' incident",
     "You asked if you could kiss me"
@@ -356,7 +356,7 @@ function initRestaurantInteraction() {
         const successMessage = document.createElement('div');
         successMessage.className = 'success-message';
         successMessage.innerHTML = `
-          <p>Yes! Our first date at Restauranté Amano was unforgettable sie.</p>
+          <p>Yes! Our first date at Restauranté Amano was unforgettable siesie.</p>
           <p>I loved every second we spent together that evening</p>
         `;
         
@@ -372,7 +372,7 @@ function initRestaurantInteraction() {
         }, 100);
         
         // Change button to continue
-        checkDateOrderButton.textContent = 'Continue Our Journey';
+        checkDateOrderButton.textContent = 'Continue';
         checkDateOrderButton.style.backgroundColor = '#4CAF50';
         checkDateOrderButton.style.boxShadow = '0 0 15px rgba(76, 175, 80, 0.7)';
         
@@ -420,9 +420,9 @@ function initRestaurantInteraction() {
       if (attempts === 3) {
         hintMessage.textContent = 'Hint: The evening started with one of us being shy...';
       } else if (attempts === 4) {
-        hintMessage.textContent = 'Hint: First you got shy, then we ordered food...';
+        hintMessage.textContent = 'Hint: Then we ordered food...';
       } else if (attempts >= 5) {
-        hintMessage.textContent = 'Hint: The correct order is: shy → ordered → "my pleasure" → trust → kiss';
+        hintMessage.textContent = 'Pathetic';
       }
       
       // Remove any existing hint

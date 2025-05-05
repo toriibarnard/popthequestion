@@ -75,13 +75,13 @@ function initCameraInteraction() {
         const existingDesc = puzzleSection.querySelector('p');
         if (!existingDesc) {
           const description = document.createElement('p');
-          description.innerHTML = '📸 <span class="neon-text">Our memories</span> are captured in this photo. Can you piece them back together?';
+          description.innerHTML = '📸 <span class="neon-text">My favourite</span> picture fell apart. Can you piece it back together?';
           description.style.fontSize = '18px';
           description.style.marginBottom = '20px';
           description.style.textShadow = '0 0 5px rgba(0, 0, 0, 0.7)';
           puzzleSection.insertBefore(description, puzzleContainer);
         } else {
-          existingDesc.innerHTML = '📸 <span class="neon-text">Our memories</span> are captured in this photo. Can you piece them back together?';
+          existingDesc.innerHTML = '📸 <span class="neon-text">My favourite</span> picture fell apart. Can you piece it back together?';
           existingDesc.style.fontSize = '18px';
           existingDesc.style.marginBottom = '20px';
           existingDesc.style.textShadow = '0 0 5px rgba(0, 0, 0, 0.7)';
@@ -503,7 +503,7 @@ function initCameraInteraction() {
       // Add the completed image
       const completedImage = document.createElement('img');
       completedImage.src = imagePath;
-      completedImage.alt = 'Our Favorite Picture';
+      completedImage.alt = 'My Favorite Picture';
       completedImage.className = 'completed-image';
       completedImage.style.width = '250px';
       completedImage.style.height = 'auto';
@@ -515,7 +515,7 @@ function initCameraInteraction() {
       const message = document.createElement('div');
       message.className = 'success-message';
       message.innerHTML = `
-        <p><strong>Perfect!</strong> ❤️ This is one of my favorite memories with you.</p>
+        <p><strong>Perfect!</strong> I'll always love this picture 10x more than you do..</p>
       `;
       
       // Add to the puzzle container
@@ -523,7 +523,7 @@ function initCameraInteraction() {
       puzzleContainer.appendChild(message);
       
       // Change button text
-      checkPuzzleButton.textContent = 'Continue Our Journey';
+      checkPuzzleButton.textContent = 'Continue';
       checkPuzzleButton.style.backgroundColor = '#4CAF50';
       checkPuzzleButton.style.boxShadow = '0 0 15px rgba(76, 175, 80, 0.7)';
       checkPuzzleButton.style.animation = 'pulse 2s infinite';

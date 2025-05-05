@@ -87,7 +87,7 @@ function initSongInteraction() {
       // Create song title element
       const songTitle = document.createElement('div');
       songTitle.className = 'song-title';
-      songTitle.innerHTML = '"Lover, You Should\'ve Come Over" by Joel Plaskett';
+      songTitle.innerHTML = '"Lover, You Should\'ve Come Over" by Jeff Buckley';
       songTitle.style.fontSize = '0.8em';
       songTitle.style.marginTop = '5px';
       songTitle.style.color = '#1DB954';
@@ -498,7 +498,7 @@ function initSongInteraction() {
         // Add a celebration message
         const celebrationMessage = document.createElement('div');
         celebrationMessage.className = 'celebration-message';
-        celebrationMessage.textContent = 'Our song forever ❤️';
+        celebrationMessage.textContent = 'The song that makes me think of you';
         celebrationMessage.style.textAlign = 'center';
         celebrationMessage.style.color = '#1DB954';
         celebrationMessage.style.fontWeight = 'bold';
@@ -519,7 +519,7 @@ function initSongInteraction() {
         }, 2000);
         
         // Change button style and text
-        checkLyricsButton.textContent = 'Continue Our Journey';
+        checkLyricsButton.textContent = 'Continue';
         checkLyricsButton.style.backgroundColor = '#4CAF50';
         checkLyricsButton.style.boxShadow = '0 0 15px rgba(76, 175, 80, 0.7)';
         

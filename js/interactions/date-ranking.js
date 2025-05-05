@@ -10,7 +10,7 @@ function initDateRankingInteraction() {
       { id: "mercantile", name: "Mercantile and Karaoke", description: "The shitty service and shitty song selection that we made the most of" },
       { id: "firstdate", name: "First Date", description: "Our very first date where we got to know each other." },
       { id: "innspring", name: "Innspring Rekindle", description: "Our special reconnection, and finally being able to enjoy the food without taking 10 bathroom breaks" },
-      { id: "underground", name: "Secret Speakeasy", description: "Having some drinks at the underground bar - that disco inferno was not worth it" },
+      { id: "underground", name: "Today", description: "Right now! playing this stupid little game that you dont even wanna know how long it took to make" },
       { id: "thaigaming", name: "Chaa Baa Thai and Playdium", description: "Some yummy thai food followed by a bullshit excuse of a soccer arcade game" }
     ];
     
@@ -289,28 +289,28 @@ function initDateRankingInteraction() {
         
         // Generate personalized message based on her choices
         let messageHTML = '';
-        messageHTML += `<p>Thank you for ranking our special dates! ❤️</p>`;
+        messageHTML += `<p>Thank you for ranking our special dates!</p>`;
         
         if (currentRanking.length > 0) {
-          messageHTML += `<p>I love that you put "${currentRanking[0].name}" as our best date. That was truly a magical time!</p>`;
+          messageHTML += `<p>I love that you put "${currentRanking[0].name}" as our best date. I somehow knew you would!</p>`;
         }
         
         // Comment on second/third choices
         if (currentRanking.length > 1) {
-          messageHTML += `<p>"${currentRanking[1].name}" was also so special to me.</p>`;
+          messageHTML += `<p>I also put "${currentRanking[1].name}" as my second favourite too! great minds think alike </p>`;
         }
         
         if (currentRanking.length > 2) {
-          messageHTML += `<p>And I'll never forget "${currentRanking[2].name}" - what a wonderful memory!</p>`;
+          messageHTML += `<p>And obviously i could tell that you would put "${currentRanking[2].name}" as 3rd. I read you like a book!</p>`;
         }
         
-        messageHTML += `<p>These moments with you are what I treasure most. Thank you for being the most amazing person in my life.</p>`;
+        messageHTML += `<p>I'll always remember these beautiful memories with you</p>`;
         
         message.innerHTML = messageHTML;
         datesContainer.appendChild(message);
         
         // Change button
-        checkRankingButton.textContent = 'Continue Our Journey';
+        checkRankingButton.textContent = 'Continue';
         checkRankingButton.style.backgroundColor = '#4CAF50';
         checkRankingButton.style.boxShadow = '0 0 15px rgba(76, 175, 80, 0.7)';
         
