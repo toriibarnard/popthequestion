@@ -1,0 +1,419 @@
+/* Proposal CSS - Enhanced styling for the "Will you go out with me?" interaction */
+
+/* Main proposal container */
+#finalQuestion {
+  background: linear-gradient(135deg, rgba(10, 10, 20, 0.9), rgba(20, 20, 40, 0.95));
+  border-radius: 15px;
+  padding: 40px;
+  text-align: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 0 30px rgba(255, 64, 129, 0.7), 0 0 50px rgba(255, 64, 129, 0.4);
+  color: white;
+  z-index: 1000;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+/* Heading styles */
+#finalQuestion h2 {
+  color: #FF4081;
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px rgba(255, 64, 129, 0.7);
+  font-weight: bold;
+  letter-spacing: 1px;
+  position: relative;
+  display: inline-block;
+}
+
+/* Add decorative elements to heading */
+#finalQuestion h2::before,
+#finalQuestion h2::after {
+  content: '❤️';
+  position: absolute;
+  font-size: 0.5em;
+  top: 50%;
+  transform: translateY(-50%);
+  animation: pulse 2s infinite alternate;
+}
+
+#finalQuestion h2::before {
+  left: -40px;
+}
+
+#finalQuestion h2::after {
+  right: -40px;
+}
+
+/* Paragraph styling */
+#finalQuestion p {
+  font-size: 1.2em;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Main heart animation */
+.heart-animation {
+  position: relative;
+  font-size: 4em;
+  margin: 30px 0;
+  display: inline-block;
+  animation: floatHeart 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 15px rgba(255, 64, 129, 0.8));
+}
+
+@keyframes floatHeart {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.1) rotate(5deg); }
+}
+
+/* Button styling */
+.button {
+  background: linear-gradient(135deg, #FF4081, #C2185B);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 15px 35px;
+  margin: 15px;
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.button:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+/* Yes button styling */
+#yesButton {
+  background: linear-gradient(135deg, #FF4081, #C2185B);
+  min-width: 120px;
+  position: relative;
+  overflow: hidden;
+}
+
+#yesButton::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: rotate(30deg);
+  transition: transform 0.5s;
+  pointer-events: none;
+}
+
+#yesButton:hover::after {
+  transform: rotate(30deg) translate(50%, 50%);
+}
+
+/* No button styling */
+#noButton {
+  background: linear-gradient(135deg, #455A64, #263238);
+  opacity: 0.9;
+  min-width: 120px;
+  transition: all 0.2s ease;
+}
+
+#noButton:hover {
+  background: linear-gradient(135deg, #37474F, #263238);
+}
+
+/* Celebration screen */
+#celebration {
+  background: linear-gradient(135deg, rgba(10, 10, 20, 0.9), rgba(30, 30, 60, 0.95));
+  border-radius: 15px;
+  padding: 40px;
+  text-align: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 700px;
+  height: 70%;
+  max-height: 500px;
+  box-shadow: 0 0 40px rgba(255, 64, 129, 0.8), 0 0 100px rgba(255, 64, 129, 0.3);
+  color: white;
+  z-index: 1000;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+/* Celebration heading */
+#celebration h1 {
+  color: #FF4081;
+  font-size: 3em;
+  margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(255, 64, 129, 0.8);
+  animation: pulseText 2s infinite;
+  position: relative;
+  display: inline-block;
+}
+
+@keyframes pulseText {
+  0%, 100% { text-shadow: 0 0 15px rgba(255, 64, 129, 0.8); }
+  50% { text-shadow: 0 0 30px rgba(255, 64, 129, 1), 0 0 50px rgba(255, 64, 129, 0.6); }
+}
+
+/* Celebration text */
+#celebration p {
+  font-size: 1.4em;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Heart animation elements */
+.heart {
+  position: absolute;
+  color: #ff4081;
+  font-size: 24px;
+  z-index: 20;
+  pointer-events: none;
+  animation: float 3s ease-in forwards;
+  text-shadow: 0 0 10px rgba(255, 64, 129, 0.7);
+}
+
+@keyframes float {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(10deg); }
+  100% { transform: translateY(-40px) rotate(0deg); opacity: 0; }
+}
+
+/* Confetti particles */
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+/* Comment bubbles for No button */
+.comment-bubble {
+  position: absolute;
+  background-color: rgba(10, 10, 20, 0.9);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  pointer-events: none;
+  z-index: 2000;
+  animation: fadeOutBubble 1.5s forwards;
+  white-space: nowrap;
+  box-shadow: 0 0 10px rgba(255, 64, 129, 0.5);
+  border: 1px solid rgba(255, 64, 129, 0.3);
+}
+
+.comment-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 10px 10px 0;
+  border-style: solid;
+  border-color: rgba(10, 10, 20, 0.9) transparent transparent transparent;
+}
+
+@keyframes fadeOutBubble {
+  0%, 80% { opacity: 1; transform: translateY(0) translateX(-50%); }
+  100% { opacity: 0; transform: translateY(-10px) translateX(-50%); }
+}
+
+/* Photo frame styling */
+.photo-frame {
+  width: 300px;
+  height: 200px;
+  margin: 30px auto;
+  border: 10px solid rgba(255, 255, 255, 0.9);
+  border-radius: 5px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 64, 129, 0.4);
+  background-image: url('images/couple.png');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  transform: rotate(-3deg);
+  transition: transform 0.3s ease;
+  overflow: hidden;
+}
+
+.photo-frame::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.photo-frame:hover {
+  transform: rotate(3deg) scale(1.05);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.7), 0 0 50px rgba(255, 64, 129, 0.6);
+}
+
+/* Background floating hearts */
+.background-heart {
+  position: absolute;
+  color: rgba(255, 64, 129, 0.2);
+  font-size: 40px;
+  z-index: 5;
+  pointer-events: none;
+  animation: bgFloat 15s linear infinite;
+}
+
+@keyframes bgFloat {
+  0% { transform: translateY(100%) rotate(0); opacity: 0; }
+  10% { opacity: 0.2; }
+  90% { opacity: 0.2; }
+  100% { transform: translateY(-100%) rotate(360deg); opacity: 0; }
+}
+
+/* Music indication */
+.music-indicator {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 15px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 30px;
+  box-shadow: 0 0 10px rgba(255, 64, 129, 0.3);
+}
+
+.music-indicator span {
+  font-size: 14px;
+}
+
+/* Sound visualizer bars */
+.visualizer-container {
+  display: flex;
+  align-items: flex-end;
+  height: 15px;
+  gap: 2px;
+  margin-left: 5px;
+}
+
+.visualizer-bar {
+  width: 3px;
+  background-color: #FF4081;
+  border-radius: 1px;
+  animation: soundBars 0.5s ease infinite alternate;
+}
+
+.visualizer-bar:nth-child(1) { animation-delay: 0.0s; }
+.visualizer-bar:nth-child(2) { animation-delay: 0.1s; }
+.visualizer-bar:nth-child(3) { animation-delay: 0.2s; }
+.visualizer-bar:nth-child(4) { animation-delay: 0.3s; }
+
+@keyframes soundBars {
+  0% { height: 3px; }
+  100% { height: 15px; }
+}
+
+/* Polaroid-style memories that appear during celebration */
+.memory-polaroid {
+  background-color: white;
+  padding: 10px 10px 30px 10px;
+  display: inline-block;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  position: absolute;
+  width: 100px;
+  transform: rotate(0deg);
+  opacity: 0;
+  animation: fadeInPolaroid 1s forwards, floatPolaroid 3s ease-in-out infinite;
+}
+
+.memory-polaroid img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.memory-polaroid p {
+  color: #000;
+  font-size: 10px;
+  text-align: center;
+  margin: 5px 0 0 0;
+  font-family: cursive;
+}
+
+@keyframes fadeInPolaroid {
+  from { opacity: 0; transform: scale(0.8) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes floatPolaroid {
+  0%, 100% { transform: translateY(0) rotate(var(--rotate, 0deg)); }
+  50% { transform: translateY(-10px) rotate(var(--rotate, 0deg)); }
+}
+
+/* Additional animations */
+@keyframes pulse {
+  0%, 100% { transform: translateY(-50%) scale(1); }
+  50% { transform: translateY(-50%) scale(1.2); }
+}
+
+/* Glow effects for buttons */
+.button {
+  position: relative;
+}
+
+.button::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border-radius: 33px;
+  background: linear-gradient(45deg, #FF4081, transparent, #FF4081);
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: -1;
+  animation: rotateBorder 2s linear infinite;
+}
+
+#yesButton:hover::before {
+  opacity: 0.5;
+}
+
+@keyframes rotateBorder {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

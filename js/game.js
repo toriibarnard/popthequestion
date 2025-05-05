@@ -112,8 +112,12 @@ function setupBackgroundMusic() {
   try {
     // Create audio element for background music
     backgroundMusic = new Audio('audio/no-one-noticed.mp3');
+    backgroundMusic.id = 'backgroundMusic'; // Add an ID for easier reference
     backgroundMusic.loop = true; // Loop the music
     backgroundMusic.volume = 0.5; // Set volume to 50%
+    
+    // Add to document body for accessibility by other scripts
+    document.body.appendChild(backgroundMusic);
     
     // Start playing when user interacts with the page
     document.addEventListener('click', function startMusic() {
@@ -142,9 +146,20 @@ function setupBackgroundMusic() {
     });
     
     console.log("Background music initialized");
+    
+    // Create proposal music element (but don't play it yet)
+    const proposalMusic = document.createElement('audio');
+    proposalMusic.id = 'proposalMusic';
+    proposalMusic.src = 'audio/proposal-song.mp3';
+    proposalMusic.loop = true;
+    proposalMusic.volume = 0; // Start at zero volume
+    proposalMusic.preload = 'auto'; // Pre-load the audio
+    document.body.appendChild(proposalMusic);
+    
   } catch (e) {
     console.error("Could not set up background music:", e);
   }
+  
   // Set up toggle button for music
   document.getElementById('toggleMusic').addEventListener('click', function() {
     if (backgroundMusic.paused) {

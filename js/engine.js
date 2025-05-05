@@ -119,6 +119,9 @@ function completeStage(stage) {
 function showFinalQuestion() {
   const finalQuestion = document.getElementById('finalQuestion');
   finalQuestion.style.display = 'block';
+  gameState.activeInteraction = "proposal";
+  
+  // If using the new proposal.js, it will automatically handle styling and effects
 }
 
 function createHearts() {
