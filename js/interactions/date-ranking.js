@@ -10,7 +10,7 @@ function initDateRankingInteraction() {
       { id: "mercantile", name: "Mercantile and Karaoke", description: "The shitty service and shitty song selection that we made the most of" },
       { id: "firstdate", name: "First Date", description: "Our very first date where we got to know each other." },
       { id: "innspring", name: "Innspring Rekindle", description: "Our special reconnection, and finally being able to enjoy the food without taking 10 bathroom breaks" },
-      { id: "underground", name: "Today", description: "Right now! playing this stupid little game that you dont even wanna know how long it took to make" },
+      { id: "underground", name: "Today", description: "Making you choose dinner and playing this stupid little game that you dont even wanna know how long it took to make" },
       { id: "thaigaming", name: "Chaa Baa Thai and Playdium", description: "Some yummy thai food followed by a bullshit excuse of a soccer arcade game" }
     ];
     
